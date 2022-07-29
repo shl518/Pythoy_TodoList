@@ -10,7 +10,11 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
-    return render(request, 'todo/home.html')
+    if str(request.user) == 'AnonymousUser':
+        return render(request, 'todo/home.html')
+    else:
+        return render(request, 'todo/currenttodos.html')
+
 
 # User Sign up
 def signupuser(request):

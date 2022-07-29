@@ -1,5 +1,9 @@
 {% extends "todo/base.html" %}
+{% load static %}
+{% block css %}
 
+    <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
+{% endblock %}
 {% block content %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
@@ -21,14 +25,54 @@
                 </div>
                 <div class="form-group">
                     <label for="memo">Memo</label>
-                    <textarea name="memo" class="form-control" id="memo" ></textarea>
+                    <textarea name="memo" class="form-control" id="memo"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="expiration_date">Expiration_date</label>
+                    <input id="expiration_date" name="expiration_date" class="form-control" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label for="level">Level</label>
+                    <select id="level" name="level" type="text" class="form-control" required>
+
+                        <option value="" selected="">---------</option>
+
+                        <option value="0">不紧急任务</option>
+
+                        <option value="2">优先任务</option>
+
+                        <option value="1">普通任务</option>
+
+                        <option value="3">突发紧急任务</option>
+
+
+                    </select>
+
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" name="important" class="form-check-input" id="important">
-                    <label class="form-check-label" for="important">Important</label>
+                    <input type="checkbox" name="everyday" class="form-check-input" id="important">
+                    <label class="form-check-label" for="everyday">Everyday</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
+
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap_dist/js/bootstrap.min.js' %}"></script>
+    <script src={% static 'plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js' %}></script>
+    <script
+            src={% static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
+    <script>
+        $('#expiration_date').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            startDate: '0',
+            language: "zh-CN",
+            autoclose: true,
+            minView: 0,
+            minuteStep: 1,
+        });
+    </script>
 {% endblock %}
