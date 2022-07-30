@@ -42,6 +42,7 @@ class Todo(models.Model):
     fixedTime_start = models.TimeField(verbose_name="日常任务固定时间开始", null=True, blank=True)
     fixedTime_end = models.TimeField(verbose_name="日常任务固定时间结束", null=True, blank=True)
     tag = models.SmallIntegerField(verbose_name="标签", choices=tag_choices, default=0)
+    overdue = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

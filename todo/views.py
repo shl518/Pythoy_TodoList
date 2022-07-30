@@ -92,6 +92,7 @@ def currenttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 1
+    data_dict['overdue'] = False
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
@@ -108,6 +109,7 @@ def unstarttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 0
+    data_dict['overdue'] = False
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
     return render(request, 'todo/unstarttodo.html', {'todos': todos})
 
@@ -116,6 +118,15 @@ def unstarttodos(request):
 def completedtodos(request):
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
     return render(request, 'todo/completedtodos.html', {'todos': todos})
+
+
+@login_required
+def expiredtodos(request):
+    now = datetime.datetime.now()
+    Todo.objects.filter(user=request.user, expiration_date__lt=now, overdue=False).update(overdue=True)
+    todos = Todo.objects.filter(user=request.user, expiration_date__lt=now, datecompleted__isnull=True).order_by(
+        '-expiration_date')
+    return render(request, 'todo/expiredtido.html', {'todos': todos})
 
 
 @login_required
