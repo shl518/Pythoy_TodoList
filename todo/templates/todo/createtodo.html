@@ -1,7 +1,7 @@
 {% extends "todo/base.html" %}
 {% load static %}
 {% block css %}
-
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
     <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
 {% endblock %}
 {% block content %}
@@ -96,6 +96,7 @@
 
                 <div class="form-group form-check">
                     <input type="checkbox" name="isdaily" class="form-check-input" id="isdaily" Onclick="check()">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <label class="form-check-label" for="isdaily">日常</label>
                 </div>
 
@@ -129,9 +130,27 @@
     <script
             src={% static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
     <script>
+        var date = new Date();//创建JS自带的Date日期对象
+
+        var year = date.getFullYear();//获取年
+
+        var month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
+        month = month < 10 ? "0" + month : month;//三则运算符判断是个位数则前面加一个零，好看
+
+        var day = date.getDate();//获取日
+        day = day < 10 ? "0" + day : day;
+
+        var hour = date.getHours();//获取小时
+        hour = hour < 10 ? "0" + hour : hour;
+
+        var minute = date.getMinutes();//获取分钟
+        minute = minute < 10 ? "0" + minute : minute;
+
+
+        var current = year + "-" + month + "-" + day + " " + hour + ":" + minute;
         $('#expiration_date').datetimepicker({
             format: 'yyyy-mm-dd hh:ii:ss',
-            startDate: '0',
+            startDate: current,
             language: "zh-CN",
             autoclose: true,
             minView: 0,
