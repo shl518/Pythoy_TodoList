@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="{% static 'todo/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
     {% block css %}{% endblock %}
     <title>Todo Woo</title>
 </head>
@@ -48,7 +49,7 @@
                 </ul>
             {% endif %}
 
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto" style="float: right">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" id="timespan" href="#">Time</a>

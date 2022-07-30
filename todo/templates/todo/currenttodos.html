@@ -1,7 +1,7 @@
 {% extends "todo/base.html" %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
+
     <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
 {% endblock %}
 {% block content %}
@@ -16,16 +16,20 @@
                     </div>
                 {% endif %}
                 <form method="get">
-                    <div class="form-group col-md-4">
-                        <input id="start" name="start" class="form-control" type="text" required placeholder="start">
-                    </div>
-                    <div class="form-group col-md-1">--------</div>
-                    <div class="form-group col-md-4">
-                        <input id="end" name="end" class="form-control" type="text" required placeholder="end">
-                    </div>
-                    <div class="form-group col-md-1">&nbsp</div>
-                    <div class="form-group col-md-1">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <input id="start" name="start" class="form-control" type="time" required
+                                   placeholder="start">
+                        </div>
+                        -----
+                        <div class="form-group col-md-4">
+                            <input id="end" name="end" class="form-control" type="time" required placeholder="end">
+                        </div>
+
+                        <div class="form-group col-md-1">&nbsp</div>
+                        <div class="form-group col-md-1">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
                     </div>
                 </form>
             {% else %}
@@ -81,22 +85,22 @@
     <script src={% static 'plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js' %}></script>
     <script
             src={% static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
-    <script>
-        $('#start').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            startDate: '0',
-            language: "zh-CN",
-            autoclose: true,
-            minView: 0,
-            minuteStep: 1,
-        });
-        $('#end').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            startDate: '0',
-            language: "zh-CN",
-            autoclose: true,
-            minView: 0,
-            minuteStep: 1,
-        });
-    </script>
+    {#    <script>#}
+    {#        $('#start').datetimepicker({#}
+    {#            format: 'yyyy-mm-dd hh:ii:ss',#}
+    {#            startDate: '0',#}
+    {#            language: "zh-CN",#}
+    {#            autoclose: true,#}
+    {#            minView: 0,#}
+    {#            minuteStep: 1,#}
+    {#        });#}
+    {#        $('#end').datetimepicker({#}
+    {#            format: 'yyyy-mm-dd hh:ii:ss',#}
+    {#            startDate: '0',#}
+    {#            language: "zh-CN",#}
+    {#            autoclose: true,#}
+    {#            minView: 0,#}
+    {#            minuteStep: 1,#}
+    {#        });#}
+    {#    </script>#}
 {% endblock %}

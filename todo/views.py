@@ -7,6 +7,7 @@ from .forms import TodoForm
 from .models import Todo
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+import datetime
 
 
 # Create your views here.
@@ -85,6 +86,9 @@ def currenttodos(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
     if start and end:
+        today = str(datetime.date.today())
+        start = today + ' ' + start + ':00'
+        end = today + ' ' + end + ':00'
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
