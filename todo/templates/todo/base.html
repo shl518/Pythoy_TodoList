@@ -31,16 +31,16 @@
             {% if user.is_authenticated %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item {{ unstart }}">
-                        <a class="nav-link" href="{% url 'currenttodos' %}">Unstart</a>
-                    </li>
-                    <li class="nav-item {{ expired }}">
-                        <a class="nav-link" href="{% url 'currenttodos' %}">Expired</a>
+                        <a class="nav-link" href="/unstart/">Unstart</a>
                     </li>
                     <li class="nav-item {{ current }}">
                         <a class="nav-link" href="{% url 'currenttodos' %}">Current</a>
                     </li>
                     <li class="nav-item {{ completed }}">
                         <a class="nav-link" href="{% url 'completedtodos' %}">Completed</a>
+                    </li>
+                    <li class="nav-item {{ expired }}">
+                        <a class="nav-link" href="{% url 'currenttodos' %}">Expired</a>
                     </li>
                     <li class="nav-item {{ create }}">
                         <a class="nav-link" href="{% url 'createtodo' %}">Create</a>

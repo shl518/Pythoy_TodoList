@@ -91,9 +91,25 @@ def currenttodos(request):
         end = today + ' ' + end + ':00'
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
-    # data_dict['status'] = 1
+    data_dict['status'] = 1
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
+
+
+@login_required
+def unstarttodos(request):
+    data_dict = {}
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+    if start and end:
+        today = str(datetime.date.today())
+        start = today + ' ' + start + ':00'
+        end = today + ' ' + end + ':00'
+        data_dict['expiration_date__lt'] = end
+        data_dict['expiration_date__gt'] = start
+    data_dict['status'] = 0
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
+    return render(request, 'todo/unstarttodo.html', {'todos': todos})
 
 
 @login_required
@@ -121,7 +137,9 @@ def viewtodo(request, todo_pk):
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'POST':
-        todo.datecompleted = timezone.now()
+        todo.status = todo.status + 1
+        if todo.status == 2:
+            todo.datecompleted = timezone.now()
         todo.save()
         return redirect('currenttodos')
 
