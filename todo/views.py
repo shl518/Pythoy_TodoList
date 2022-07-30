@@ -77,7 +77,13 @@ def createtodo(request):
 
 @login_required
 def currenttodos(request):
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
+    data_dict = {}
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+    if start and end:
+        data_dict['expiration_date__lt'] = end
+        data_dict['expiration_date__gt'] = start
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 
