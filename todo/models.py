@@ -31,7 +31,7 @@ class Todo(models.Model):
     memo = models.TextField(verbose_name="内容", blank=True)
     created = models.DateTimeField(auto_now_add=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
-    important = models.BooleanField(default=False)
+    important = models.BooleanField(default=False)  # 不要用这个，没有用
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     level = models.SmallIntegerField(verbose_name="任务重要性", choices=level_choices, default=0)
     expiration_date = models.DateTimeField(verbose_name="任务截止日期", null=True, blank=True)
@@ -39,9 +39,9 @@ class Todo(models.Model):
     predict_hour = models.IntegerField(verbose_name="预计花费小时", default=0)
     predict_minute = models.IntegerField(verbose_name="预计花费分钟", default=0)
     isDaily = models.BooleanField(verbose_name="日常", default=False)
-    fixedTime = models.DateTimeField(verbose_name="日常任务固定时间", null=True, blank=True)
+    fixedTime_start = models.TimeField(verbose_name="日常任务固定时间开始", null=True, blank=True)
+    fixedTime_end = models.TimeField(verbose_name="日常任务固定时间结束", null=True, blank=True)
     tag = models.SmallIntegerField(verbose_name="标签", choices=tag_choices, default=0)
-
 
     def __str__(self):
         return self.title
