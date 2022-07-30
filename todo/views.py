@@ -52,6 +52,10 @@ def loginuser(request):
             return redirect('currenttodos')
 
 
+def tocalendar(request):
+    return render(request, 'todo/calendar.html')
+
+
 @login_required
 def logoutuser(request):
     if request.method == 'POST':
