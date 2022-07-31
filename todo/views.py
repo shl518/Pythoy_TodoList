@@ -12,10 +12,23 @@ import datetime
 
 # Create your views here.
 def home(request):
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     if str(request.user) == 'AnonymousUser':
-        return render(request, 'todo/home.html')
+        unstart = current = completed = expired = 0
     else:
-        return render(request, 'todo/currenttodos.html')
+        unstart = Todo.objects.filter(user=request.user, overdue=False, status=0, expiration_date__lt=tomorrow).count()
+        current = Todo.objects.filter(user=request.user, overdue=False, status=1, expiration_date__lt=tomorrow).count()
+        completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False,
+                                        expiration_date__lt=tomorrow).count()
+        expired = Todo.objects.filter(user=request.user, overdue=True, expiration_date__lt=tomorrow).count()
+    return render(request, 'todo/home.html', {
+        'user_name': str(request.user),
+        'unstart': unstart,
+        'current': current,
+        'completed': completed,
+        'expired': expired,
+        'all': unstart + completed + current + expired,
+    })
 
 
 # User Sign up
@@ -50,7 +63,7 @@ def loginuser(request):
                           {'form': AuthenticationForm(), 'error': 'Username and password did not match.'})
         else:
             login(request, user)
-            return redirect('currenttodos')
+            return redirect('home')
 
 
 def tocalendar(request):
@@ -78,7 +91,7 @@ def createtodo(request):
             newtodo = form.save(commit=False)
             newtodo.user = request.user
             newtodo.save()
-            return redirect('currenttodos')
+            return redirect('unstarttodos')
         except ValueError:
             return render(request, 'todo/createtodo.html',
                           {'form': TodoForm(), 'error': 'Bad data passed in. Try again.'})

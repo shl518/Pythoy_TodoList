@@ -1,5 +1,5 @@
 {% extends "todo/base.html" %}
-
+{% load static %}
 {% block content %}
     <br>
     <br>
@@ -7,13 +7,79 @@
     <br>
     <br>
     <br>
-<div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-7 text-center">
 
-                 <h1>Simply Your Todos. Woo!</h1>
-            <p>Life is fun. But life is also busy. There is a million different things you could be doing. But what matters is <u>what</u> you do. We created <b><i>Todo Woo</i></b> to help you make sense of all of your opportunities and live that life that matters most to you. Your new organized life awaits.</p>
-        <a role="button" class="btn btn-primary btn-lg" href="{% url 'signupuser' %}">Start</a>
+            <h1>Simply Your Todos. Woo!</h1>
+            <p>Life is fun. But life is also busy. There is a million different things you could be doing. But what
+                matters is <u>what</u> you do. We created <b><i>Todo Woo</i></b> to help you make sense of all of your
+                opportunities and live that life that matters most to you. Your new organized life awaits.</p>
+            {% if user_name == 'AnonymousUser' %}
+                <br>
+                <a role="button" class="btn btn-primary btn-lg" href="{% url 'signupuser' %}">Start</a>
+            {% elif all == 0 %}
+                <br>
+                <a role="button" class="btn btn-primary btn-lg" href="/unstart/">Hint here to add task</a>
+            {% else %}
+                <div id="main" style="width: 600px;height:400px;"></div>
+            {% endif %}
+
         </div>
     </div>
 
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        option = {
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                top: '5%',
+                left: 'center'
+            },
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '40',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: {{ unstart }}, name: 'Unstart'},
+                        {value: {{ current }}, name: 'Current'},
+                        {value: {{ completed }}, name: 'Completed'},
+                        {value: {{ expired }}, name: 'Expired'},
+                    ]
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 {% endblock %}
