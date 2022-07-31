@@ -57,6 +57,10 @@ def tocalendar(request):
     return render(request, 'todo/calendar.html')
 
 
+def whichdate(request):
+    return render(request, "todo/whichdate.html")
+
+
 @login_required
 def logoutuser(request):
     if request.method == 'POST':
