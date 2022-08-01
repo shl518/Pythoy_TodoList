@@ -85,6 +85,7 @@
 .today {
     border: 0.2rem solid #9fd0f8;
     background-color: #d7f8ff;
+    cursor: pointer;
 }
 
 .issue {

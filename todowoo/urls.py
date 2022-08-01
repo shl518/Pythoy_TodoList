@@ -38,5 +38,5 @@ urlpatterns = [
 
     # calendar
     path('calendar/', views.tocalendar, name='tocalendar'),
-    path('whichdate/', views.whichdate, name='whichdate'),
+    path('calendar/whichdate/', views.whichdate, name='whichdate'),
 ]

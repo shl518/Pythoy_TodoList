@@ -66,12 +66,13 @@ def loginuser(request):
             return redirect('home')
 
 
+# calendar
 def tocalendar(request):
     return render(request, 'todo/calendar.html')
 
 
-def whichdate(request):
-    return render(request, "todo/whichdate.html")
+def whichdate(request, date):
+    return render(request, 'todo/whichdate.html')
 
 
 @login_required
