@@ -12,6 +12,9 @@ import datetime
 
 # Create your views here.
 def home(request):
+    today = datetime.date.today()
+    Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(datecompleted=None,
+                                                                                         overdue=False)
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     if str(request.user) == 'AnonymousUser':
         unstart = current = completed = expired = 0
@@ -101,6 +104,7 @@ def createtodo(request):
 @login_required
 def currenttodos(request):
     data_dict = {}
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     start = request.GET.get('start')
     end = request.GET.get('end')
     if start and end:
@@ -111,13 +115,15 @@ def currenttodos(request):
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 1
     data_dict['overdue'] = False
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__lt=tomorrow,
+                                **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 
 @login_required
 def unstarttodos(request):
     data_dict = {}
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     start = request.GET.get('start')
     end = request.GET.get('end')
     if start and end:
@@ -128,7 +134,8 @@ def unstarttodos(request):
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 0
     data_dict['overdue'] = False
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, **data_dict)
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__lt=tomorrow,
+                                **data_dict)
     return render(request, 'todo/unstarttodo.html', {'todos': todos})
 
 
