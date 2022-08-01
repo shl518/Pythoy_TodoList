@@ -13,12 +13,12 @@ import datetime
 # Create your views here.
 def home(request):
     today = datetime.date.today()
-    Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(datecompleted=None,
-                                                                                         overdue=False)
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     if str(request.user) == 'AnonymousUser':
         unstart = current = completed = expired = 0
     else:
+        Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(datecompleted=None,
+                                                                                             overdue=False)
         unstart = Todo.objects.filter(user=request.user, overdue=False, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, overdue=False, status=1, expiration_date__lt=tomorrow).count()
         completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False,
