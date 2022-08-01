@@ -46,9 +46,29 @@
                     {% for todo in todos %}
                         <div class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}"
                              style="{% if todo.status == 1 %} color: #942a25{% endif %}">
-                            <a class="col-lg-10">
+                            <a class="col-lg-8">
                                 <b>{{ todo.title }}</b>
-                                {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
+                                {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}&nbsp;&nbsp;&nbsp;
+                                {% if todo.tag == 0 %}
+                                    运动
+                                {% elif todo.tag == 1 %}
+                                    学习
+                                {% elif todo.tag == 2 %}
+                                    饮食
+                                {% elif todo.tag == 3 %}
+                                    工作
+                                {% elif todo.tag == 4 %}
+                                    休闲
+                                {% elif todo.tag == 5 %}
+                                    生活
+                                {% elif todo.tag == 6 %}
+                                    其他
+                                {% endif %}
+                            </a>
+                            <a class="col-lg-1">{% if todo.status == 0 %}-nc{% else %}~ing{% endif %}</a>
+                            <a href="{% url 'viewtodo' todo.id %}" class="col-lg-1">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"
+                                      style="{% if todo.status == 1 %} color: #942a25{% endif %}"></span>
                             </a>
                             <a href="/run/?nid={{ todo.id }}" class="col-lg-1">
                                 {% if todo.status == 0 %}

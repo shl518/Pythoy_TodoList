@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="memo">任务内容</label>
-                    <textarea name="memo" class="form-control" id="memo"></textarea>
+                    <textarea name="memo" class="form-control" id="memo">{{ todo.memo }}</textarea>
                     <script>
                         document.getElementById("memo").value =
                         {{ todo.memo }}
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="expiration_date">日期</label>
                     <input id="expiration_date" name="expiration_date" class="form-control" type="text" required
-                           value="{{ todo.expiration_date }}">
+                           value="{{ pre }}">
                 </div>
                 <label for="predict_hour">预计时间</label>
 
@@ -59,15 +59,15 @@
                     <label for="level">紧急程度</label>
                     <select id="level" name="level" type="text" class="form-control" required>
 
-                        <option value="" selected="">无</option>
+                        <option value="" disabled>无</option>
 
-                        <option value="0">不紧急任务</option>
+                        <option value="0" {% if todo.level == 0 %}selected{% endif %}>不紧急任务</option>
 
-                        <option value="2">优先任务</option>
+                        <option value="2" {% if todo.level == 2 %}selected{% endif %}>优先任务</option>
 
-                        <option value="1">普通任务</option>
+                        <option value="1" {% if todo.level == 1 %}selected{% endif %}>普通任务</option>
 
-                        <option value="3">突发紧急任务</option>
+                        <option value="3" {% if todo.level == 3 %}selected{% endif %}>突发紧急任务</option>
 
 
                     </select>
@@ -80,19 +80,19 @@
 
                         <option value="" selected="">无</option>
 
-                        <option value="0">运动</option>
+                        <option value="0" {% if todo.tag == 0 %}selected{% endif %}>运动</option>
 
-                        <option value="1">学习</option>
+                        <option value="1" {% if todo.tag == 1 %}selected{% endif %}>学习</option>
 
-                        <option value="2">饮食</option>
+                        <option value="2" {% if todo.tag == 2 %}selected{% endif %}>饮食</option>
 
-                        <option value="3">工作</option>
+                        <option value="3" {% if todo.tag == 3 %}selected{% endif %}>工作</option>
 
-                        <option value="4">休闲</option>
+                        <option value="4" {% if todo.tag == 4 %}selected{% endif %}>休闲</option>
 
-                        <option value="5">生活</option>
+                        <option value="5" {% if todo.tag == 5 %}selected{% endif %}>生活</option>
 
-                        <option value="5">其他</option>
+                        <option value="6" {% if todo.tag == 6 %}selected{% endif %}>其他</option>
 
 
                     </select>
