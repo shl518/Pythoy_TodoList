@@ -1,9 +1,13 @@
 {% extends "todo/base.html" %}
-
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
+{% endblock %}
 {% block content %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
-            <h2>New Todo</h2>
+            <h2>修改任务</h2>
         </div>
     </div>
     <div class="row justify-content-center mt-5">
@@ -16,31 +20,161 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" id="title" value="{{ todo.title }}" required>
+                    <label for="title">任务标题</label>
+                    <input type="text" name="title" class="form-control" id="title" required value="{{ todo.title }}">
                 </div>
                 <div class="form-group">
-                    <label for="memo">Memo</label>
-                    <textarea name="memo" rows="5" class="form-control" id="memo" >{{ todo.memo }}</textarea>
+                    <label for="memo">任务内容</label>
+                    <textarea name="memo" class="form-control" id="memo"></textarea>
+                    <script>
+                        document.getElementById("memo").value =
+                        {{ todo.memo }}
+                    </script>
                 </div>
+                <div class="form-group">
+                    <label for="expiration_date">日期</label>
+                    <input id="expiration_date" name="expiration_date" class="form-control" type="text" required
+                           value="{{ todo.expiration_date }}">
+                </div>
+                <label for="predict_hour">预计时间</label>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <label for="predict_hour">小时</label>
+                            <input id="predict_hour" name="predict_hour" class="form-control" type="number" min="0"
+                                   step="1" value="{{ todo.predict_hour }}" required>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <label for="predict_hour">分钟</label>
+                            <input id="predict_minute" name="predict_minute" class="form-control" type="number" min="0"
+                                   max="59" step="1" value="{{ todo.predict_minute }}" type="number" required>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+
+                <div class="form-group">
+                    <label for="level">紧急程度</label>
+                    <select id="level" name="level" type="text" class="form-control" required>
+
+                        <option value="" selected="">无</option>
+
+                        <option value="0">不紧急任务</option>
+
+                        <option value="2">优先任务</option>
+
+                        <option value="1">普通任务</option>
+
+                        <option value="3">突发紧急任务</option>
+
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="tag">标签</label>
+                    <select id="tag" name="tag" type="text" class="form-control" required>
+
+                        <option value="" selected="">无</option>
+
+                        <option value="0">运动</option>
+
+                        <option value="1">学习</option>
+
+                        <option value="2">饮食</option>
+
+                        <option value="3">工作</option>
+
+                        <option value="4">休闲</option>
+
+                        <option value="5">生活</option>
+
+                        <option value="5">其他</option>
+
+
+                    </select>
+
+                </div>
+
                 <div class="form-group form-check">
-                    <input type="checkbox" name="important" class="form-check-input" id="important" {% if todo.important %}checked{% endif %}>
-                    <label class="form-check-label" for="important">Important</label>
+                    <input type="checkbox" name="isdaily" class="form-check-input" id="isdaily"
+                           value="{{ todo.isDaily }}" Onclick="check()">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="form-check-label" for="isdaily">日常</label>
                 </div>
+
+                <label for="fixedTime_start" hidden='hidden' id='labelfixed'>日常任务固定时间</label>
+
+                <div class="row" id='but' hidden="hidden">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <label for="fixedTime_start">开始</label>
+                            <input id="fixedTime_start" name="fixedTime_start" class="form-control" type="time"
+                                   value="{{ todo.fixedTime_start }}">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <label for="fixedTime_end">结束</label>
+                            <input id="fixedTime_end" name="fixedTime_end" class="form-control" type="time"
+                                   value="{{ todo.fixedTime_end }}">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <br>
                 <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-success" onclick="$('#complete').click()">Start</button>
-                <button type="button" class="btn btn-danger" onclick="$('#delete').click()">Delete</button>
             </form>
+
         </div>
     </div>
-    {% if todo.datecompleted is None %}
-        <form style='display: none;' method="POST" action="{% url 'completetodo' todo.id %}">
-            {% csrf_token %}
-            <button id="complete" type="submit">Complete</button>
-        </form>
-    {% endif %}
-    <form style='display: none;' method="POST" action="{% url 'deletetodo' todo.id %}">
-        {% csrf_token %}
-        <button id="delete" type="submit">Delete</button>
-    </form>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap_dist/js/bootstrap.min.js' %}"></script>
+    <script src={% static 'plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js' %}></script>
+    <script
+            src={% static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
+    <script>
+        var date = new Date();//创建JS自带的Date日期对象
+
+        var year = date.getFullYear();//获取年
+
+        var month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
+        month = month < 10 ? "0" + month : month;//三则运算符判断是个位数则前面加一个零，好看
+
+        var day = date.getDate();//获取日
+        day = day < 10 ? "0" + day : day;
+
+        var hour = date.getHours();//获取小时
+        hour = hour < 10 ? "0" + hour : hour;
+
+        var minute = date.getMinutes();//获取分钟
+        minute = minute < 10 ? "0" + minute : minute;
+
+
+        var current = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+        $('#expiration_date').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            startDate: current,
+            language: "zh-CN",
+            autoclose: true,
+            minView: 0,
+            minuteStep: 1,
+        });
+    </script>
+    <script>
+        function check() {
+            var checkbox = document.getElementById("isdaily");//选中checkbox的id；
+            if (checkbox.checked == true) {//按钮已选中
+                document.getElementById("but").removeAttribute("hidden");//移除disabled
+                document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
+            } else {
+                document.getElementById("but").hidden = "hidden";
+                document.getElementById('labelfixed').hidden = 'hidden';
+            }
+        }
+    </script>
 {% endblock %}

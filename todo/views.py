@@ -95,7 +95,7 @@ def createtodo(request):
             newtodo = form.save(commit=False)
             newtodo.user = request.user
             newtodo.save()
-            return redirect('unstarttodos')
+            return redirect('currenttodos')
         except ValueError:
             return render(request, 'todo/createtodo.html',
                           {'form': TodoForm(), 'error': 'Bad data passed in. Try again.'})
@@ -113,10 +113,8 @@ def currenttodos(request):
         end = today + ' ' + end + ':00'
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
-    data_dict['status'] = 1
     data_dict['overdue'] = False
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__lt=tomorrow,
-                                **data_dict)
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 
@@ -127,14 +125,11 @@ def unstarttodos(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
     if start and end:
-        today = str(datetime.date.today())
-        start = today + ' ' + start + ':00'
-        end = today + ' ' + end + ':00'
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 0
     data_dict['overdue'] = False
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__lt=tomorrow,
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__gte=tomorrow,
                                 **data_dict)
     return render(request, 'todo/unstarttodo.html', {'todos': todos})
 
@@ -170,19 +165,19 @@ def viewtodo(request, todo_pk):
 
 
 @login_required
-def completetodo(request, todo_pk):
+def completetodo(request):
+    todo_pk = request.GET.get('nid')
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
-    if request.method == 'POST':
-        todo.status = todo.status + 1
-        if todo.status == 2:
-            todo.datecompleted = timezone.now()
-        todo.save()
-        return redirect('currenttodos')
+    todo.status = todo.status + 1
+    if todo.status == 2:
+        todo.datecompleted = timezone.now()
+    todo.save()
+    return redirect('currenttodos')
 
 
 @login_required
-def deletetodo(request, todo_pk):
+def deletetodo(request):
+    todo_pk = request.GET.get('nid')
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
-    if request.method == 'POST':
-        todo.delete()
-        return redirect('currenttodos')
+    todo.delete()
+    return redirect('currenttodos')

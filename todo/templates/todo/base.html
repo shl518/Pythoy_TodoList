@@ -117,7 +117,7 @@
         second = second < 10 ? "0" + second : second;
 
         var current = year + "-" + month + "-" + day + " 星期" + weekday + " " + hour + ":" + minute + ":" + second;
-        console.log(current);//在控制台打印当前时间
+        {#console.log(current);//在控制台打印当前时间#}
         document.getElementById("timespan").innerHTML = current;//获取对应ID标签的对象，将变量current显示在对应位置
     }
 
