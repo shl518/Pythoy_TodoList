@@ -7,7 +7,10 @@ from .forms import TodoForm
 from .models import Todo
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.http import response
+from django.forms.models import model_to_dict
 import datetime
+from todo.pack import greater
 
 month_dic = months = {
     "January": 1,
@@ -97,10 +100,14 @@ def whichdate(request):
     all_day = Todo.objects.filter(user=request.user)
     matters = []
     for item in all_day:
-        if str(item.expiration_date).split()[0] == date:
+        item_date = str(item.expiration_date).split()[0]
+        if (item_date == date) or (item.isDaily and
+                                   greater(list(map(int, item_date.split('-'))), date_list)):
             matters.append(item)
-    print(matters)
-    return render(request, 'todo/calendar.html')
+    json_list = []
+    for item in matters:
+        json_list.append(model_to_dict(item))
+    return response.JsonResponse(json_list, safe=False)
 
 
 @login_required

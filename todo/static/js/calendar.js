@@ -42,6 +42,31 @@ const renderCalendar = () => {
         "December",
     ];
 
+    const months_dic = {
+        "January": 1,
+        "February": 2,
+        "March": 3,
+        "April": 4,
+        "May": 5,
+        "June": 6,
+        "July": 7,
+        "August": 8,
+        "September": 9,
+        "October": 10,
+        "November": 11,
+        "December": 12,
+    };
+
+    const tag_choices = {
+        0: "运动",
+        1: "学习",
+        2: "饮食",
+        3: "工作",
+        4: "休闲",
+        5: "生活",
+        6: "其他",
+    }
+
     document.querySelector(".date h1").innerHTML = months[date.getMonth()] + "   " + date.getFullYear().toString();
     document.querySelector(".date p").innerHTML = new Date().toDateString();
 
@@ -73,11 +98,24 @@ const renderCalendar = () => {
             /* 1.创建对象 2.初始化请求方法并设置url 3.发送 4.事件绑定 */
             const xhr = new XMLHttpRequest();
             const phrase = 'month=' + Message(i)[0] + '&year=' + Message(i)[1] + '&date=' + Message(i)[2];
-            xhr.open('GET', 'http://127.0.0.1:8000/calendar/whichdate?' + phrase, true);
+            const target = document.getElementById("matters");
+            const the_day = document.getElementById("mission");
+            the_day.innerText = 'Missions of ' + Message(i)[1] + '.' + months_dic[Message(i)[0]] + '.' + Message(i)[2];
+            xhr.open('GET', 'http://127.0.0.1:8000/calendar/whichdate?' + phrase);
             xhr.send();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
+                        const json = JSON.parse(xhr.response);
+                        let divs = "";
+                        for (let i = 0; i < json.length; i++) {
+                            divs += `<div class="issue-column">`;
+                            divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
+                            divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
+                            divs += `<div class="issue-start">` + 'Start Time :' + `</div>`;
+                            divs += `</div>`;
+                        }
+                        target.innerHTML = divs;
                     }
                 }
             }
