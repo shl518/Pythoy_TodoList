@@ -1,3 +1,5 @@
+import functools
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -107,7 +109,27 @@ def whichdate(request):
     json_list = []
     for item in matters:
         json_list.append(model_to_dict(item))
+        # str(item.expiration_date).split("T")[0]
+    json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
     return response.JsonResponse(json_list, safe=False)
+
+
+def cmp_for_todo(self, other):
+    time_1 = self["expiration_date"]
+    time_2 = other["expiration_date"]
+    duration_1 = str("%02d" % self["predict_hour"]) + ":" + str("%02d" % self["predict_minute"])
+    duration_2 = str("%02d" % other["predict_hour"]) + ":" + str("%02d" % other["predict_minute"])
+    if time_1 > time_2:
+        return 1
+    elif time_1 < time_2:
+        return -1
+    else:
+        if duration_1 > duration_2:
+            return 1
+        elif duration_1 < duration_2:
+            return -1
+        else:
+            return 0
 
 
 @login_required

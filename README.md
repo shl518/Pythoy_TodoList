@@ -15,3 +15,4 @@
 - 8.01 23:26 zzl 修复了存在的bug
 - 8.02 07:30 zzl 按要求进行修改
 - 8.02 16:30 Enqurance Update日历系统
+- 8.02 17:50 Enqurance Update日历系统 -v2

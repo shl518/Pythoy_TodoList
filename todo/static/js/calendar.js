@@ -107,15 +107,20 @@ const renderCalendar = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         const json = JSON.parse(xhr.response);
-                        let divs = "";
-                        for (let i = 0; i < json.length; i++) {
-                            divs += `<div class="issue-column">`;
-                            divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
-                            divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
-                            divs += `<div class="issue-start">` + 'Start Time :' + `</div>`;
-                            divs += `</div>`;
+                        if (json.length > 0) {
+                            let divs = "";
+                            for (let i = 0; i < json.length; i++) {
+                                divs += `<div class="issue-column">`;
+                                divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
+                                divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
+                                divs += `<div class="issue-start">` + 'Start Time : ' + json[i].expiration_date.split("T")[1].slice(0, 5) + `</div>`;
+                                divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>'
+                                divs += `</div>`;
+                            }
+                            target.innerHTML = divs;
+                        } else {
+                            target.innerHTML = `<div class="issue-nothing">` + 'You have no mission this day!' + `</div>`
                         }
-                        target.innerHTML = divs;
                     }
                 }
             }
