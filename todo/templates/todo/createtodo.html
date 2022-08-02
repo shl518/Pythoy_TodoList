@@ -95,9 +95,9 @@
                 </div>
 
                 <div class="form-group form-check">
-                    <input type="checkbox" name="isdaily" class="form-check-input" id="isdaily" Onclick="check()">
+                    <input type="checkbox" name="isDaily" class="form-check-input" id="isDaily" Onclick="check()">
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <label class="form-check-label" for="isdaily">日常</label>
+                    <label class="form-check-label" for="isDaily">日常</label>
                 </div>
 
                 <label for="fixedTime_start" hidden='hidden' id='labelfixed'>日常任务固定时间</label>
@@ -159,7 +159,7 @@
     </script>
     <script>
         function check() {
-            var checkbox = document.getElementById("isdaily");//选中checkbox的id；
+            var checkbox = document.getElementById("isDaily");//选中checkbox的id；
             if (checkbox.checked == true) {//按钮已选中
                 document.getElementById("but").removeAttribute("hidden");//移除disabled
                 document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled

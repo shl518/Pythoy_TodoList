@@ -16,3 +16,4 @@
 - 8.02 07:30 zzl 按要求进行修改
 - 8.02 16:30 Enqurance Update日历系统
 - 8.02 17:50 Enqurance Update日历系统 -v2
+- 8.02 18:33 zzl 修改了isDaily的bug
