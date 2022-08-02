@@ -3,6 +3,7 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
     <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
+    <link rel="stylesheet" href="{% static 'css/symbol.css' %}">
 {% endblock %}
 {% block content %}
     <div class="row justify-content-center mt-5">
@@ -44,25 +45,25 @@
             {% if todos %}
                 <div class="list-group">
                     {% for todo in todos %}
-                        <div class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}"
+                        <div class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %} iconfont"
                              style="{% if todo.status == 1 %} color: #942a25{% endif %}">
                             <a class="col-lg-8">
                                 <b>{{ todo.title }}</b>
                                 {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}&nbsp;&nbsp;&nbsp;
                                 {% if todo.tag == 0 %}
-                                    运动
+                                    &#xe807;
                                 {% elif todo.tag == 1 %}
-                                    学习
+                                    &#xe6b8;
                                 {% elif todo.tag == 2 %}
-                                    饮食
+                                    &#xe800;
                                 {% elif todo.tag == 3 %}
-                                    工作
+                                    &#xe687;
                                 {% elif todo.tag == 4 %}
-                                    休闲
+                                    &#xe64f;
                                 {% elif todo.tag == 5 %}
-                                    生活
+                                    &#xe67b;
                                 {% elif todo.tag == 6 %}
-                                    其他
+                                    &#xe6fe;
                                 {% endif %}
                             </a>
                             <a class="col-lg-1">{% if todo.status == 0 %}-nc{% else %}~ing{% endif %}</a>
