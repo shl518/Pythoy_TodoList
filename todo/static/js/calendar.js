@@ -72,13 +72,12 @@ const renderCalendar = () => {
         block.onclick = function () {
             /* 1.创建对象 2.初始化请求方法并设置url 3.发送 4.事件绑定 */
             const xhr = new XMLHttpRequest();
-            const result = document.getElementById("Mission")
-            xhr.open('GET', 'http://127.0.0.1:8000/calendar', true);
+            const phrase = 'month=' + Message(i)[0] + '&year=' + Message(i)[1] + '&date=' + Message(i)[2];
+            xhr.open('GET', 'http://127.0.0.1:8000/calendar/whichdate?' + phrase, true);
             xhr.send();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        result.innerHTML = Message(i).toString();
                     }
                 }
             }

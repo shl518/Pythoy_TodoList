@@ -9,6 +9,21 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 import datetime
 
+month_dic = months = {
+    "January": 1,
+    "February": 2,
+    "March": 3,
+    "April": 4,
+    "May": 5,
+    "June": 6,
+    "July": 7,
+    "August": 8,
+    "September": 9,
+    "October": 10,
+    "November": 11,
+    "December": 12,
+}
+
 
 # Create your views here.
 def home(request):
@@ -74,8 +89,17 @@ def tocalendar(request):
     return render(request, 'todo/calendar.html')
 
 
-def whichdate(request, date):
-    return render(request, 'todo/whichdate.html')
+def whichdate(request):
+    global month_dic
+    date_list = list(request.GET.values())
+    date = str(date_list[1] + "-%02d-%02d" % (month_dic[date_list[0]], int(date_list[2])))
+    all_day = Todo.objects.filter(user=request.user)
+    matters = []
+    for item in all_day:
+        if str(item.expiration_date).split()[0] == date:
+            matters.append(item)
+    print(matters)
+    return render(request, 'todo/calendar.html')
 
 
 @login_required
