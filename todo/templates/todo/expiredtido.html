@@ -13,15 +13,17 @@
         <div class="col-md-10">
             <div class="list-group">
                 {% for todo in todos %}
-                    <a href="{% url 'viewtodo' todo.id %}" class="col-lg-8">
-                        {% if todo.important %}<b>{% endif %}
-                        {{ todo.title }}
-                        {% if todo.important %}</b>{% endif %}
-                        {% if todo.memo %} - {{ todo.memo }}{% endif %}
-                        <div style="float: right">
-                            {{ todo.expiration_date|date:'M j Y H:i' }}
-                        </div>
-                    </a>
+                    <div class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}">
+                        <a href="{% url 'viewtodo' todo.id %}" class="col-lg-8">
+                            {% if todo.important %}<b>{% endif %}
+                            {{ todo.title }}
+                            {% if todo.important %}</b>{% endif %}
+                            {% if todo.memo %} - {{ todo.memo }}{% endif %}
+                            <div style="float: right">
+                                {{ todo.expiration_date|date:'M j Y H:i' }}
+                            </div>
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
         </div>
