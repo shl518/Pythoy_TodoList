@@ -38,8 +38,8 @@ def home(request):
         unstart = current = completed = expired = 0
     else:
         Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(status=0,
-                                                                                                datecompleted=None,
-                                                                                                overdue=False)
+                                                                                             datecompleted=None,
+                                                                                             overdue=False)
         unstart = Todo.objects.filter(user=request.user, overdue=False, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, overdue=False, status=1, expiration_date__lt=tomorrow).count()
         completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False, expiration_date__gte=today,
@@ -211,7 +211,10 @@ def viewtodo(request, todo_pk):
     if request.method == 'GET':
         form = TodoForm(instance=todo)
         pre = str(todo.expiration_date)[0:19]
-        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre})
+        s_time = str(todo.fixedTime_start)[0:5]
+        e_time = str(todo.fixedTime_end)[0:5]
+        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre,
+                                                      's_time': s_time, 'e_time': e_time})
     else:
         try:
             form = TodoForm(request.POST, instance=todo)

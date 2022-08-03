@@ -18,3 +18,4 @@
 - 8.02 17:50 Enqurance Update日历系统 -v2
 - 8.02 18:33 zzl 修改了isDaily的bug
 - 8.02 23:24 zzl 增加了图标显示
+- 8.03 11:18 zzl 修改了编辑是isDaily无默认值的问题
