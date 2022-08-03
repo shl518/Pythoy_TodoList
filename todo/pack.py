@@ -1,6 +1,4 @@
-def greater(date_1, date_2):
-    print(date_1)
-    print(date_2)
+def greater(date_2, date_1):
     if date_1[0] > date_2[0]:
         return True
     elif date_1[0] < date_2[0]:

@@ -104,8 +104,9 @@ def whichdate(request):
     matters = []
     for item in all_day:
         item_date = str(item.expiration_date).split()[0]
+        query_date = [int(date_list[1]), month_dic[date_list[0]], int(date_list[2])]
         if (item_date == date) or (item.isDaily and
-                                   greater(list(map(int, item_date.split('-'))), date_list)):
+                                   greater(list(map(int, item_date.split('-'))), query_date)):
             matters.append(item)
     json_list = []
     for item in matters:
