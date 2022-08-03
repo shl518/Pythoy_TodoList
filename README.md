@@ -19,3 +19,8 @@
 - 8.02 18:33 zzl 修改了isDaily的bug
 - 8.02 23:24 zzl 增加了图标显示
 - 8.03 10:20 Enqurance 完善了Calendar的功能
+<<<<<<< HEAD
+- 8.03 16:10 Enqurance Calendar页面编写完毕
+=======
+- 8.03 11:18 zzl 修改了编辑是isDaily无默认值的问题
+>>>>>>> origin/master

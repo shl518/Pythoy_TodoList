@@ -107,7 +107,6 @@
 .matters {
     height: 45rem;
     background-color: #ffffff;
-    border-radius: 2rem;
     border-style: groove;
     border-color: #0f0f0f;
     overflow: auto;

@@ -117,6 +117,26 @@ def whichdate(request):
     return response.JsonResponse(json_list, safe=False)
 
 
+def today(request):
+    date_list = list(request.GET.values())
+    date = str(date_list[1] + "-%02d-%02d" % (int(date_list[0]), int(date_list[2])))
+    all_day = Todo.objects.filter(user=request.user)
+    matters = []
+    for item in all_day:
+        item_date = str(item.expiration_date).split()[0]
+        query_date = [int(date_list[1]), int(date_list[0]), int(date_list[2])]
+        if (item_date == date) or (item.isDaily and
+                                   greater(list(map(int, item_date.split('-'))), query_date)):
+            matters.append(item)
+    json_list = []
+    for item in matters:
+        json_list.append(model_to_dict(item))
+        # str(item.expiration_date).split("T")[0]
+    json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
+    print(json_list)
+    return response.JsonResponse(json_list, safe=False)
+
+
 def cmp_for_todo(self, other):
     time_1 = self["expiration_date"]
     time_2 = other["expiration_date"]
@@ -217,7 +237,10 @@ def viewtodo(request, todo_pk):
     if request.method == 'GET':
         form = TodoForm(instance=todo)
         pre = str(todo.expiration_date)[0:19]
-        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre})
+        s_time = str(todo.fixedTime_start)[0:5]
+        e_time = str(todo.fixedTime_end)[0:5]
+        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre,
+                                                      's_time': s_time, 'e_time': e_time})
     else:
         try:
             form = TodoForm(request.POST, instance=todo)

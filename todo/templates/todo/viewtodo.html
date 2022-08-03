@@ -98,13 +98,13 @@
                     </select>
 
                 </div>
-
                 <div class="form-group form-check">
-                    <input type="checkbox" name="isdaily" class="form-check-input" id="isdaily"
-                           value="{{ todo.isDaily }}" Onclick="check()">
+                    <input type="checkbox" name="isDaily" class="form-check-input" id="isDaily" Onclick="check()" {% if todo.isDaily %}
+                    checked="checked" {% endif %} >
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <label class="form-check-label" for="isdaily">日常</label>
+                    <label class="form-check-label" for="isDaily">日常</label>
                 </div>
+
 
                 <label for="fixedTime_start" hidden='hidden' id='labelfixed'>日常任务固定时间</label>
 
@@ -113,14 +113,14 @@
                         <div class="input-group">
                             <label for="fixedTime_start">开始</label>
                             <input id="fixedTime_start" name="fixedTime_start" class="form-control" type="time"
-                                   value="{{ todo.fixedTime_start }}">
+                                   value="{{ s_time }}">
                         </div><!-- /input-group -->
                     </div><!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                         <div class="input-group">
                             <label for="fixedTime_end">结束</label>
                             <input id="fixedTime_end" name="fixedTime_end" class="form-control" type="time"
-                                   value="{{ todo.fixedTime_end }}">
+                                   value="{{ e_time }}">
                         </div><!-- /input-group -->
                     </div><!-- /.col-lg-6 -->
                 </div><!-- /.row -->
@@ -164,10 +164,15 @@
             minView: 0,
             minuteStep: 1,
         });
+        var checkbox = document.getElementById("isDaily");//选中checkbox的id；
+            if (checkbox.checked == true) {//按钮已选中
+                document.getElementById("but").removeAttribute("hidden");//移除disabled
+                document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
+            }
     </script>
     <script>
         function check() {
-            var checkbox = document.getElementById("isdaily");//选中checkbox的id；
+            var checkbox = document.getElementById("isDaily");//选中checkbox的id；
             if (checkbox.checked == true) {//按钮已选中
                 document.getElementById("but").removeAttribute("hidden");//移除disabled
                 document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
@@ -176,5 +181,6 @@
                 document.getElementById('labelfixed').hidden = 'hidden';
             }
         }
+
     </script>
 {% endblock %}

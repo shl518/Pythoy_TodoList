@@ -41,4 +41,5 @@ urlpatterns = [
     # calendar
     path('calendar/', views.tocalendar, name='tocalendar'),
     path('calendar/whichdate/', views.whichdate, name='whichdate'),
+    path('calendar/today/', views.today, name='today'),
 ]
