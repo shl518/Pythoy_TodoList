@@ -38,14 +38,20 @@ def home(request):
     if str(request.user) == 'AnonymousUser':
         unstart = current = completed = expired = 0
     else:
-        Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(status=0,
-                                                                                             datecompleted=None,
-                                                                                             overdue=False)
-        unstart = Todo.objects.filter(user=request.user, overdue=False, status=0, expiration_date__lt=tomorrow).count()
-        current = Todo.objects.filter(user=request.user, overdue=False, status=1, expiration_date__lt=tomorrow).count()
+        ###############
+        todos = Todo.objects.filter(user=request.user, isDaily=True, expiration_date__lt=today)
+        for to in todos:
+            end1 = str(today) + ' ' + str(to.fixedTime_end)
+            if to.fixedTime_end:
+                to.expiration_date = end1
+                to.status = 0
+                to.save()
+        ###############
+        unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
+        current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
         completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False, expiration_date__gte=today,
                                         expiration_date__lt=tomorrow).count()
-        expired = Todo.objects.filter(user=request.user, overdue=True, expiration_date__lt=tomorrow,
+        expired = Todo.objects.filter(user=request.user, status=3, expiration_date__lt=tomorrow,
                                       datecompleted__isnull=True, expiration_date__gte=today).count()
     return render(request, 'todo/home.html', {
         'user_name': str(request.user),
@@ -181,9 +187,11 @@ def createtodo(request):
 @login_required
 def currenttodos(request):
     data_dict = {}
+    today = datetime.date.today()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     start = request.GET.get('start')
     end = request.GET.get('end')
+    data_dict['expiration_date__gt'] = today
     data_dict['expiration_date__lt'] = tomorrow
     if start and end:
         today = str(datetime.date.today())
@@ -191,7 +199,6 @@ def currenttodos(request):
         end = today + ' ' + end + ':00'
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
-    data_dict['overdue'] = False
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
@@ -206,7 +213,6 @@ def unstarttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     data_dict['status'] = 0
-    data_dict['overdue'] = False
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__gte=tomorrow,
                                 **data_dict)
     return render(request, 'todo/unstarttodo.html', {'todos': todos})
@@ -214,15 +220,18 @@ def unstarttodos(request):
 
 @login_required
 def completedtodos(request):
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
+    data_dict = {}
+    today = datetime.date.today()
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    data_dict['expiration_date__gt'] = today
+    data_dict['expiration_date__lt'] = tomorrow
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False, **data_dict).order_by('-datecompleted')
     return render(request, 'todo/completedtodos.html', {'todos': todos})
 
 
 @login_required
 def expiredtodos(request):
-    now = datetime.datetime.now()
-    Todo.objects.filter(user=request.user, expiration_date__lt=now, overdue=False).update(overdue=True)
-    todos = Todo.objects.filter(user=request.user, expiration_date__lt=now, datecompleted__isnull=True).order_by(
+    todos = Todo.objects.filter(user=request.user, status=3).order_by(
         '-expiration_date')
     return render(request, 'todo/expiredtido.html', {'todos': todos})
 
