@@ -232,7 +232,10 @@ def viewtodo(request, todo_pk):
     if request.method == 'GET':
         form = TodoForm(instance=todo)
         pre = str(todo.expiration_date)[0:19]
-        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre})
+        s_time = str(todo.fixedTime_start)[0:5]
+        e_time = str(todo.fixedTime_end)[0:5]
+        return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre,
+                                                      's_time': s_time, 'e_time': e_time})
     else:
         try:
             form = TodoForm(request.POST, instance=todo)
