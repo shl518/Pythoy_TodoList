@@ -13,7 +13,7 @@ from django.http import response
 from django.forms.models import model_to_dict
 import datetime
 from todo.pack import greater
-from todo.algorithm import Optimal
+from utils.algorithm import Optimal
 
 month_dic = months = {
     "January": 1,
