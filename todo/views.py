@@ -38,8 +38,8 @@ def home(request):
         unstart = current = completed = expired = 0
     else:
         Todo.objects.filter(user=request.user, isDaily=True, datecompleted__lt=today).update(status=0,
-                                                                                                datecompleted=None,
-                                                                                                overdue=False)
+                                                                                             datecompleted=None,
+                                                                                             overdue=False)
         unstart = Todo.objects.filter(user=request.user, overdue=False, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, overdue=False, status=1, expiration_date__lt=tomorrow).count()
         completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False, expiration_date__gte=today,
@@ -104,8 +104,9 @@ def whichdate(request):
     matters = []
     for item in all_day:
         item_date = str(item.expiration_date).split()[0]
+        query_date = [int(date_list[1]), month_dic[date_list[0]], int(date_list[2])]
         if (item_date == date) or (item.isDaily and
-                                   greater(list(map(int, item_date.split('-'))), date_list)):
+                                   greater(list(map(int, item_date.split('-'))), query_date)):
             matters.append(item)
     json_list = []
     for item in matters:

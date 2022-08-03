@@ -1,5 +1,64 @@
 const date = new Date();
 
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+const months_dic = {
+    "January": 1,
+    "February": 2,
+    "March": 3,
+    "April": 4,
+    "May": 5,
+    "June": 6,
+    "July": 7,
+    "August": 8,
+    "September": 9,
+    "October": 10,
+    "November": 11,
+    "December": 12,
+};
+
+const tag_choices = {
+    0: "运动",
+    1: "学习",
+    2: "饮食",
+    3: "工作",
+    4: "休闲",
+    5: "生活",
+    6: "其他",
+}
+
+const status = {
+    0: "未开始",
+    1: "进行中",
+    2: "已完成",
+    3: "已过期",
+}
+
+const importance = {
+    0: "不紧急任务",
+    1: "普通任务",
+    2: "优先任务",
+    3: "突发紧急任务",
+}
+
+const daily = {
+    True: "是",
+    False: "否",
+}
+
 const renderCalendar = () => {
     date.setDate(1);
 
@@ -26,46 +85,6 @@ const renderCalendar = () => {
     ).getDay();
 
     const nextDays = 7 - lastDayIndex - 1;
-
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-
-    const months_dic = {
-        "January": 1,
-        "February": 2,
-        "March": 3,
-        "April": 4,
-        "May": 5,
-        "June": 6,
-        "July": 7,
-        "August": 8,
-        "September": 9,
-        "October": 10,
-        "November": 11,
-        "December": 12,
-    };
-
-    const tag_choices = {
-        0: "运动",
-        1: "学习",
-        2: "饮食",
-        3: "工作",
-        4: "休闲",
-        5: "生活",
-        6: "其他",
-    }
 
     document.querySelector(".date h1").innerHTML = months[date.getMonth()] + "   " + date.getFullYear().toString();
     document.querySelector(".date p").innerHTML = new Date().toDateString();
@@ -115,6 +134,9 @@ const renderCalendar = () => {
                                 divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
                                 divs += `<div class="issue-start">` + 'Start Time : ' + json[i].expiration_date.split("T")[1].slice(0, 5) + `</div>`;
                                 divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>'
+                                divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
+                                divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`
+                                divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`
                                 divs += `</div>`;
                             }
                             target.innerHTML = divs;

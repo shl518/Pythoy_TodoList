@@ -126,7 +126,7 @@
 }
 
 .issue-title {
-    height: 50%;
+    height: 40%;
     text-align: center;
     line-height: 5rem;
     font-family: Klee, serif;
@@ -137,8 +137,7 @@
 .issue-tag {
     width: 20%;
     font-family: Klee, serif;
-    margin-left: 4rem;
-    margin-top: 1rem;
+    margin-left: 3rem;
     display: inline-block;
 }
 
@@ -146,7 +145,6 @@
     width: 30%;
     font-family: Klee, serif;
     margin-left: 1rem;
-    margin-top: 1rem;
     display: inline-block;
 }
 
@@ -154,14 +152,34 @@
     width: 35%;
     font-family: Klee, serif;
     margin-left: 1rem;
-    margin-top: 1rem;
+    display: inline-block;
+}
+
+.issue-status {
+    width: 25%;
+    font-family: Klee, serif;
+    margin-left: 3rem;
+    display: inline-block;
+}
+
+.issue-importance {
+    width: 40%;
+    font-family: Klee, serif;
+    margin-left: 1rem;
+    display: inline-block;
+}
+
+.issue-daily {
+    width: 20%;
+    font-family: Klee, serif;
+    margin-left: 1rem;
     display: inline-block;
 }
 
 .issue-nothing {
     font-family: Klee, serif;
     font-size: xx-large;
-    margin-left: 2rem;
+    margin-left: 2.5rem;
     margin-top: 2rem;
     display: inline-block;
 }
