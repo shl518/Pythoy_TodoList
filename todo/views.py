@@ -13,6 +13,7 @@ from django.http import response
 from django.forms.models import model_to_dict
 import datetime
 from todo.pack import greater
+from algorithm import Optimal
 
 month_dic = months = {
     "January": 1,
@@ -172,6 +173,10 @@ def currenttodos(request):
         data_dict['expiration_date__gt'] = start
     data_dict['overdue'] = False
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
+
+    print(todos[0].predict_hour)
+    print(type(todos))
+
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 
