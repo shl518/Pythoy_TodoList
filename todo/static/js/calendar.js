@@ -59,6 +59,50 @@ const daily = {
     False: "否",
 }
 
+const Message = (id) => {
+    const list = document.getElementById("chose-date").innerHTML.split("   ") + "," +
+        document.getElementById(id).innerHTML.split(",").toString().split(",");
+    return list.split(",");
+}
+
+const show = (json, target) => {
+    if (json.length > 0) {
+        let divs = "";
+        for (let i = 0; i < json.length; i++) {
+            divs += `<div class="issue-column">`;
+            divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
+            divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
+            divs += `<div class="issue-start">` + 'Start Time : ' + json[i].expiration_date.split("T")[1].slice(0, 5) + `</div>`;
+            divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>';
+            divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
+            divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
+            divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;
+            divs += `</div>`;
+        }
+        target.innerHTML = divs;
+    } else {
+        target.innerHTML = `<div class="issue-nothing">` + 'You have no mission this day!' + `</div>`;
+    }
+}
+
+const today = () => {
+    const xhr = new XMLHttpRequest();
+    const dt = new Date();
+    const year = dt.getFullYear(), month = dt.getMonth() + 1, date = dt.getDate();
+    const phrase = 'month=' + month + '&year=' + year + '&date=' + date;
+    xhr.open('GET', 'http://127.0.0.1:8000/calendar/today?' + phrase);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                const json = JSON.parse(xhr.response);
+                const target = document.getElementById("matters");
+                show(json, target);
+            }
+        }
+    }
+}
+
 const renderCalendar = () => {
     date.setDate(1);
 
@@ -126,28 +170,14 @@ const renderCalendar = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         const json = JSON.parse(xhr.response);
-                        if (json.length > 0) {
-                            let divs = "";
-                            for (let i = 0; i < json.length; i++) {
-                                divs += `<div class="issue-column">`;
-                                divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
-                                divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
-                                divs += `<div class="issue-start">` + 'Start Time : ' + json[i].expiration_date.split("T")[1].slice(0, 5) + `</div>`;
-                                divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>'
-                                divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
-                                divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`
-                                divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`
-                                divs += `</div>`;
-                            }
-                            target.innerHTML = divs;
-                        } else {
-                            target.innerHTML = `<div class="issue-nothing">` + 'You have no mission this day!' + `</div>`
-                        }
+                        show(json, target);
                     }
                 }
             }
         }
     }
+
+    today();
 };
 
 document.querySelector(".prev").addEventListener("click", () => {
@@ -161,11 +191,3 @@ document.querySelector(".next").addEventListener("click", () => {
 });
 
 renderCalendar();
-
-const Message = (id) => {
-    const list = document.getElementById("chose-date").innerHTML.split("   ") + "," +
-        document.getElementById(id).innerHTML.split(",").toString().split(",");
-    const arr = list.split(",");
-    console.log(arr);
-    return arr;
-}
