@@ -51,22 +51,23 @@
                                 <b>{{ todo.title }}</b>
                                 {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}&nbsp;&nbsp;&nbsp;
                                 {% if todo.tag == 0 %}
-                                    &#xe807;
+                                    &#xe807;运动
                                 {% elif todo.tag == 1 %}
-                                    &#xe6b8;
+                                    &#xe6b8;学习
                                 {% elif todo.tag == 2 %}
-                                    &#xe800;
+                                    &#xe800;饮食
                                 {% elif todo.tag == 3 %}
-                                    &#xe687;
+                                    &#xe687;工作
                                 {% elif todo.tag == 4 %}
-                                    &#xe64f;
+                                    &#xe64f;休闲
                                 {% elif todo.tag == 5 %}
-                                    &#xe67b;
+                                    &#xe67b;生活
                                 {% elif todo.tag == 6 %}
-                                    &#xe6fe;
-                                {% endif %}
+                                    &#xe6fe;其他
+                                {% endif %}&nbsp;
+                            {{ todo.assign_start }}-{{ todo.assign_end }}
                             </a>
-                            <a class="col-lg-1">{% if todo.status == 0 %}-nc{% else %}~ing{% endif %}</a>
+                            <font class="col-lg-1" size="2">{% if todo.status == 0 %}待开始{% else %}进行中{% endif %}</font>
                             <a href="{% url 'viewtodo' todo.id %}" class="col-lg-1">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"
                                       style="{% if todo.status == 1 %} color: #942a25{% endif %}"></span>

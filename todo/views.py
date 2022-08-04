@@ -13,7 +13,7 @@ from django.http import response
 from django.forms.models import model_to_dict
 import datetime
 from todo.pack import greater
-from utils.algorithm import Optimal
+from utils.algorithm import scheduling
 
 month_dic = months = {
     "January": 1,
@@ -200,6 +200,11 @@ def currenttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
+    assign_time = scheduling(todos)
+    for i in range(len(todos)):
+        todos[i].assign_start = assign_time[i]['start']
+        todos[i].assign_end = assign_time[i]['end']
+
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 

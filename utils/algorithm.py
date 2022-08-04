@@ -70,7 +70,7 @@ class Optimal:
                 self.PutMission(i, j)
                 self.penaltyTTime += self.punishments[i]
 
-        #print(self.penaltyTTime)
+        # print(self.penaltyTTime)
 
     # 排序：对相同截止时间的误时惩罚进行降序排列
     def punishDescent(self):
@@ -108,10 +108,25 @@ class Optimal:
 测试例子
 """
 if __name__ == '__main__':
-    deadline = [500, 400, 300,1350,1200,900]
-    lasttime = [50, 300, 200,40,200,350]
-    level = [2, 1, 3,10,2,0]
+    deadline = [500, 400, 300, 1350, 1200, 900]
+    lasttime = [50, 300, 200, 40, 200, 350]
+    level = [2, 1, 3, 10, 2, 0]
     O = Optimal(deadline, lasttime, level)  # 首先创建对象
     ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
     for res in ress:
         print(res)
+
+
+def scheduling(todos):
+    deadline = []
+    lasttime = []
+    level = []
+    for todo in todos:
+        hour = int(str(todo.expiration_date)[11:13])
+        minute = int(str(todo.expiration_date)[14:16])
+        deadline.append(hour * 60 + minute)
+        lasttime.append(todo.predict_hour * 60 + todo.predict_minute)
+        level.append(todo.level)
+    O = Optimal(deadline, lasttime, level)  # 首先创建对象
+    ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
+    return ress
