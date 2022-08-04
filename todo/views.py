@@ -111,15 +111,18 @@ def whichdate(request):
     matters = []
     for item in all_day:
         item_date = str(item.expiration_date).split()[0]
+        create_date = str(item.created).split()[0]
         query_date = [int(date_list[1]), month_dic[date_list[0]], int(date_list[2])]
         if (item_date == date) or (item.isDaily and
-                                   greater(list(map(int, item_date.split('-'))), query_date)):
+                                   greater(list(map(int, create_date.split('-'))), query_date)):
             matters.append(item)
+    arranged_matters = arrange(matters)
     json_list = []
-    for item in matters:
-        json_list.append(model_to_dict(item))
+    for item in arranged_matters:
+        json_list.append(item)
         # str(item.expiration_date).split("T")[0]
-    json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
+    # json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
+    # print(json_list)
     return response.JsonResponse(json_list, safe=False)
 
 
@@ -139,7 +142,6 @@ def today(request):
         json_list.append(model_to_dict(item))
         # str(item.expiration_date).split("T")[0]
     json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
-    print(json_list)
     return response.JsonResponse(json_list, safe=False)
 
 
@@ -159,6 +161,22 @@ def cmp_for_todo(self, other):
             return -1
         else:
             return 0
+
+
+def arrange(all_todos):
+    other_todos = []
+    cur_todos = []
+    for item in all_todos:
+        # print(item.title + " : " + str(item.datecompleted))
+        if (item.datecompleted is not None) & (item.status < 2):
+            cur_todos.append(item)
+        else:
+            other_todos.append(item)
+    todos = scheduling(cur_todos)
+    for item in other_todos:
+        todos.append(model_to_dict(item))
+    print(todos)
+    return todos
 
 
 @login_required
@@ -200,11 +218,10 @@ def currenttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
-    assign_time = scheduling(todos)
+    assign_time = scheduling(list(todos))
     for i in range(len(todos)):
         todos[i].assign_start = assign_time[i]['start']
         todos[i].assign_end = assign_time[i]['end']
-
     return render(request, 'todo/currenttodos.html', {'todos': todos})
 
 
@@ -277,4 +294,3 @@ def deletetodo(request):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     todo.delete()
     return redirect('currenttodos')
-
