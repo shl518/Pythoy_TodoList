@@ -1,6 +1,6 @@
 """
 input：顺序三个数组，截止时间数组，持续时间数组，误时惩罚数组，注意时间格式转换为纯分钟数，比如22：30转换为22*60+30 = 1350
-return:按原顺序返回字典，字典格式{'id':没用，'start':正常时间，'end'：正常时间},同时会自动输出罚时
+return:按原顺序返回字典数组，字典格式{'id':没用，'start':正常时间，'end'：正常时间},同时会自动输出罚时
 请注意！：罚时数组，罚时以level为准，即0-3一一对应，若为日常任务，请传入罚时=10作为日常任务的标记
 method：贪心
 未解决的潜在问题：日常任务固定时间冲突，由于时间只有24h = 1440min无法安排所有任务（任务总时间超出24h，超出范围的任务将不会被安排，也不会被返回）。这些问题均未考虑
@@ -70,7 +70,7 @@ class Optimal:
                 self.PutMission(i, j)
                 self.penaltyTTime += self.punishments[i]
 
-        #print(self.penaltyTTime)
+        # print(self.penaltyTTime)
 
     # 排序：对相同截止时间的误时惩罚进行降序排列
     def punishDescent(self):
@@ -108,9 +108,9 @@ class Optimal:
 测试例子
 """
 if __name__ == '__main__':
-    deadline = [500, 400, 300,1350,1200,900]
-    lasttime = [50, 300, 200,40,200,350]
-    level = [2, 1, 3,10,2,0]
+    deadline = [500, 400, 300, 1350, 1200, 900]
+    lasttime = [50, 300, 200, 40, 200, 350]
+    level = [2, 1, 3, 10, 2, 0]
     O = Optimal(deadline, lasttime, level)  # 首先创建对象
     ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
     for res in ress:

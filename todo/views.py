@@ -263,3 +263,4 @@ def deletetodo(request):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     todo.delete()
     return redirect('currenttodos')
+
