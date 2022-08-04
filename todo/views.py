@@ -206,11 +206,11 @@ def currenttodos(request):
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
     assign_time = scheduling(todos)
-    for i in range(len(assign_time)):
+    for i in range(min(len(assign_time), len(todos))):
         todos[i].assign_start = assign_time[i]['start']
         todos[i].assign_end = assign_time[i]['end']
     flag = 0
-    if len(assign_time) != len(todos):
+    if len(assign_time) < len(todos):
         flag = 1
 
     return render(request, 'todo/currenttodos.html', {'todos': todos, 'flag': flag})
