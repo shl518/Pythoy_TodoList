@@ -46,6 +46,7 @@ def home(request):
                 to.expiration_date = end1
                 to.status = 0
                 to.save()
+
         ###############
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
@@ -73,7 +74,7 @@ def signupuser(request):
                 user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
-                return redirect('currenttodos')
+                return redirect('home')
 
         except IntegrityError:
             return render(request, 'todo/signupuser.html', {'form': UserCreationForm(),
@@ -195,6 +196,10 @@ def createtodo(request):
             form = TodoForm(request.POST)
             newtodo = form.save(commit=False)
             newtodo.user = request.user
+            if newtodo.isDaily:
+                today = datetime.date.today()
+                end1 = str(today) + ' ' + str(newtodo.fixedTime_end)
+                newtodo.expiration_date = end1
             newtodo.save()
             return redirect('currenttodos')
         except ValueError:
@@ -218,11 +223,23 @@ def currenttodos(request):
         data_dict['expiration_date__lt'] = end
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
+<<<<<<< HEAD
     assign_time = scheduling(list(todos))
     for i in range(len(todos)):
         todos[i].assign_start = assign_time[i]['start']
         todos[i].assign_end = assign_time[i]['end']
     return render(request, 'todo/currenttodos.html', {'todos': todos})
+=======
+    assign_time = scheduling(todos)
+    for i in range(min(len(assign_time), len(todos))):
+        todos[i].assign_start = assign_time[i]['start']
+        todos[i].assign_end = assign_time[i]['end']
+    flag = 0
+    if len(assign_time) != len(todos):
+        flag = 1
+
+    return render(request, 'todo/currenttodos.html', {'todos': todos, 'flag': flag})
+>>>>>>> origin/master
 
 
 @login_required
