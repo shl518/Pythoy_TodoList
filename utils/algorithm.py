@@ -115,3 +115,18 @@ if __name__ == '__main__':
     ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
     for res in ress:
         print(res)
+
+
+def scheduling(todos):
+    deadline = []
+    lasttime = []
+    level = []
+    for todo in todos:
+        hour = int(str(todo.expiration_date)[11:13])
+        minute = int(str(todo.expiration_date)[14:16])
+        deadline.append(hour * 60 + minute)
+        lasttime.append(todo.predict_hour * 60 + todo.predict_minute)
+        level.append(todo.level)
+    O = Optimal(deadline, lasttime, level)  # 首先创建对象
+    ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
+    return ress
