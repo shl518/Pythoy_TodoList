@@ -74,7 +74,7 @@ def signupuser(request):
                 user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
-                return redirect('currenttodos')
+                return redirect('home')
 
         except IntegrityError:
             return render(request, 'todo/signupuser.html', {'form': UserCreationForm(),
