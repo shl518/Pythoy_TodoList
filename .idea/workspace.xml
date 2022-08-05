@@ -4,9 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5a6f22aa-b8f6-4f38-a88d-924bb81769e5" name="Changes" comment="">
+    <list default="true" id="5a6f22aa-b8f6-4f38-a88d-924bb81769e5" name="Changes" comment="Changes">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Pythoy_TodoList.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Pythoy_TodoList.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo/static/js/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/todo/static/js/calendar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo/templates/todo/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/todo/templates/todo/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/views.py" afterDir="false" />
+>>>>>>> refs/remotes/origin/master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +50,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -47,7 +59,7 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSHint" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="Pythoy_TodoList" type="Python.DjangoServer" factoryName="Django server">
@@ -56,6 +68,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="todowoo.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -85,11 +98,16 @@
       <workItem from="1659620872998" duration="1992000" />
       <workItem from="1659686184552" duration="5311000" />
       <workItem from="1659692714847" duration="30000" />
+<<<<<<< HEAD
       <workItem from="1659692747740" duration="763000" />
       <workItem from="1659697643358" duration="605000" />
       <workItem from="1659704319815" duration="527000" />
       <workItem from="1659704873333" duration="6000" />
       <workItem from="1659704919221" duration="311000" />
+=======
+      <workItem from="1659698453922" duration="4107000" />
+      <workItem from="1659703303846" duration="89000" />
+>>>>>>> refs/remotes/origin/master
     </task>
     <servers />
   </component>

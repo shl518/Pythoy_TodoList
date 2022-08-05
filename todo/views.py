@@ -47,6 +47,13 @@ def home(request):
                 to.status = 0
                 to.datecompleted = None
                 to.save()
+        t = Todo.objects.filter(user=request.user)
+        # for i in t:
+        #     i.assign_end = '00:00'
+        #     i.assign_start = '00:00'
+        #     i.status = 0
+        #     i.datecompleted = None
+        #     i.save()
         ###############
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
@@ -171,8 +178,10 @@ def arrange(all_todos):
             other_todos.append(item)
     assign_time = scheduling(cur_todos)
     for i in range(min(len(assign_time), len(cur_todos))):
-        cur_todos[assign_time[i]['id'] - 1].assign_start = assign_time[i]['start']
-        cur_todos[assign_time[i]['id'] - 1].assign_end = assign_time[i]['end']
+        if cur_todos[assign_time[i]['id'] - 1].assign_start == '00:00' or \
+                cur_todos[assign_time[i]['id'] - 1].assign_end == '00:00':
+            cur_todos[assign_time[i]['id'] - 1].assign_start = assign_time[i]['start']
+            cur_todos[assign_time[i]['id'] - 1].assign_end = assign_time[i]['end']
     for item in other_todos:
         cur_todos.append(item)
     return cur_todos
@@ -222,11 +231,6 @@ def currenttodos(request):
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
     assign_time = scheduling(list(todos))
-    for i in range(len(todos)):
-        todos[i].assign_start = assign_time[i]['start']
-        todos[i].assign_end = assign_time[i]['end']
-    return render(request, 'todo/currenttodos.html', {'todos': todos})
-    assign_time = scheduling(todos)
     for i in range(min(len(assign_time), len(todos))):
         todos[assign_time[i]['id'] - 1].assign_start = assign_time[i]['start']
         todos[assign_time[i]['id'] - 1].assign_end = assign_time[i]['end']
@@ -294,8 +298,12 @@ def completetodo(request):
     todo_pk = request.GET.get('nid')
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     todo.status = todo.status + 1
+    print(timezone.now())
+    if todo.status == 1:
+        todo.assign_start = str(timezone.now())[11:16]
     if todo.status == 2:
         todo.datecompleted = timezone.now()
+        todo.assign_end = str(timezone.now())[11:16]
     todo.save()
     return redirect('currenttodos')
 
