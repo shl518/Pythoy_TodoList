@@ -134,21 +134,21 @@
 }
 
 .issue-tag {
-    width: 20%;
+    width: 8rem;
     font-family: Arial, serif;
     margin-left: 3rem;
     display: inline-block;
 }
 
 .issue-start {
-    width: 30%;
+    width: 13rem;
     font-family: Arial, serif;
     margin-left: 1rem;
     display: inline-block;
 }
 
 .issue-duration {
-    width: 35%;
+    width: 13rem;
     font-family: Arial, serif;
     margin-left: 1rem;
     display: inline-block;
