@@ -45,8 +45,12 @@ def home(request):
             if to.fixedTime_end:
                 to.expiration_date = end1
                 to.status = 0
+                to.datecompleted = None
                 to.save()
-
+        # t = Todo.objects.filter(user=request.user)
+        # for i in t:
+        #     i.expiration_date = '2022-08-04 22:14:08'
+        #     i.save()
         ###############
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
@@ -238,7 +242,7 @@ def completedtodos(request):
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     data_dict['expiration_date__gt'] = today
     data_dict['expiration_date__lt'] = tomorrow
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False, **data_dict).order_by('-datecompleted')
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False,status=2 ,**data_dict).order_by('-datecompleted')
     return render(request, 'todo/completedtodos.html', {'todos': todos})
 
 
