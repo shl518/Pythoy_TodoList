@@ -72,8 +72,8 @@ const show = (json, target) => {
             divs += `<div class="issue-column">`;
             divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
             divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
-            divs += `<div class="issue-start">` + 'Start Time : ' + json[i].expiration_date.split("T")[1].slice(0, 5) + `</div>`;
-            divs += `<div class="issue-duration">` + 'End Time : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>';
+            divs += `<div class="issue-start">` + 'Start Time : ' + json[i].assign_start + `</div>`;
+            divs += `<div class="issue-duration">` + 'End Time : ' + json[i].assign_end + '</div>';
             divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
             divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
             divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;

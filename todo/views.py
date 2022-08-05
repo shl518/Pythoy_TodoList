@@ -117,13 +117,10 @@ def whichdate(request):
         if (item_date == date) or (item.isDaily and
                                    greater(list(map(int, create_date.split('-'))), query_date)):
             matters.append(item)
-    arranged_matters = arrange(matters)
+    arranged = arrange(matters)
     json_list = []
-    for item in matters:
+    for item in arranged:
         json_list.append(model_to_dict(item))
-        # str(item.expiration_date).split("T")[0]
-    # json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
-    # print(json_list)
     return response.JsonResponse(json_list, safe=False)
 
 
@@ -138,11 +135,10 @@ def today(request):
         if (item_date == date) or (item.isDaily and
                                    greater(list(map(int, item_date.split('-'))), query_date)):
             matters.append(item)
+    arranged = arrange(matters)
     json_list = []
-    for item in matters:
+    for item in arranged:
         json_list.append(model_to_dict(item))
-        # str(item.expiration_date).split("T")[0]
-    json_list.sort(key=functools.cmp_to_key(cmp_for_todo))
     return response.JsonResponse(json_list, safe=False)
 
 
@@ -165,7 +161,6 @@ def cmp_for_todo(self, other):
 
 
 def arrange(all_todos):
-    print("all_todos : " + str(all_todos))
     other_todos = []
     cur_todos = []
     for item in all_todos:
@@ -174,11 +169,13 @@ def arrange(all_todos):
             cur_todos.append(item)
         else:
             other_todos.append(item)
-    todos = scheduling(cur_todos)
+    assign_time = scheduling(cur_todos)
+    for i in range(min(len(assign_time), len(cur_todos))):
+        cur_todos[assign_time[i]['id'] - 1].assign_start = assign_time[i]['start']
+        cur_todos[assign_time[i]['id'] - 1].assign_end = assign_time[i]['end']
     for item in other_todos:
-        todos.append(model_to_dict(item))
-    print("todos : " + str(todos))
-    return todos
+        cur_todos.append(item)
+    return cur_todos
 
 
 @login_required
@@ -231,8 +228,8 @@ def currenttodos(request):
     return render(request, 'todo/currenttodos.html', {'todos': todos})
     assign_time = scheduling(todos)
     for i in range(min(len(assign_time), len(todos))):
-        todos[assign_time[i]['id']-1].assign_start = assign_time[i]['start']
-        todos[assign_time[i]['id']-1].assign_end = assign_time[i]['end']
+        todos[assign_time[i]['id'] - 1].assign_start = assign_time[i]['start']
+        todos[assign_time[i]['id'] - 1].assign_end = assign_time[i]['end']
     flag = 0
     if len(assign_time) != len(todos):
         flag = 1
@@ -261,7 +258,8 @@ def completedtodos(request):
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     data_dict['expiration_date__gt'] = today
     data_dict['expiration_date__lt'] = tomorrow
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False,status=2 ,**data_dict).order_by('-datecompleted')
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False, status=2, **data_dict).order_by(
+        '-datecompleted')
     return render(request, 'todo/completedtodos.html', {'todos': todos})
 
 
