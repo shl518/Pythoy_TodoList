@@ -62,6 +62,9 @@ class Optimal:
                 self.maxtime = self.deadlines[i0] if self.deadlines[i0] > self.maxtime else self.maxtime
             else:
                 break
+        if len(self.lasttime) > 1:
+            if self.punishments[i0] == 10:
+                i0 += 1
         for i in range(i0, self.n + 1):
             j = 0
             put = 0
