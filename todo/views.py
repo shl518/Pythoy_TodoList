@@ -214,7 +214,7 @@ def currenttodos(request):
         todos[i].assign_start = assign_time[i]['start']
         todos[i].assign_end = assign_time[i]['end']
     flag = 0
-    if len(assign_time) < len(todos):
+    if len(assign_time) != len(todos):
         flag = 1
 
     return render(request, 'todo/currenttodos.html', {'todos': todos, 'flag': flag})

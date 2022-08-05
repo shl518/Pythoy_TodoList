@@ -51,7 +51,7 @@ class Optimal:
         print(self.punishments)
         self.fill_past_time()
         # 首先固定日常任务
-        i0 = 0
+        i0 = 1
         for i0 in range(1, self.n + 1):
             if self.punishments[i0] == 10:
                 for t in range(self.lasttime[i0]):
@@ -74,9 +74,10 @@ class Optimal:
             # 注意，此时不要将其安排在optimalChoice[i+1,n]中，以免产生后效性。已经产生了罚时的任务，最后安排在[i+1,n]中
             # 时间片中，因为可能有punishments[i+1,n]中的一个任务，的deadlines的时间在[i+1:n]中
             if put == 0:
-                for j in range(self.deadlines[i] + self.lasttime[i], 1441):
+                for j in range(self.deadlines[i] + 1, 1441):
                     if self.NoMission(i, j):  # 如果该时间片还没有任务，则将这个任务放在这里，即置为1
                         self.PutMission(i, j)
+                        break
                 if j == 1440:
                     continue  # 如果已经超出1440范围，直接跳过该任务
                 self.penaltyTTime += self.punishments[i]
@@ -137,7 +138,6 @@ if __name__ == '__main__':
     ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
     for res in ress:
         print(res)
-    print(time.asctime())
 
 
 def scheduling(todos):
@@ -149,7 +149,10 @@ def scheduling(todos):
         minute = int(str(todo.expiration_date)[14:16])
         deadline.append(hour * 60 + minute)
         lasttime.append(todo.predict_hour * 60 + todo.predict_minute)
-        level.append(todo.level)
+        if todo.isDaily != 1:
+            level.append(todo.level)
+        else:
+            level.append(10)
     O = Optimal(deadline, lasttime, level)  # 首先创建对象
     ress = O.Arrange()  # 接着调用Arrange函数，并在左侧接受返回的字典
     return ress
