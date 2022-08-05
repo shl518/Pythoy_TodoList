@@ -68,12 +68,30 @@ const Message = (id) => {
 const show = (json, target) => {
     if (json.length > 0) {
         let divs = "";
+        var date = new Date();//创建JS自带的Date日期对象
+
+        var year = date.getFullYear();//获取年
+
+        var month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
+        month = month < 10 ? "0" + month : month;//三则运算符判断是个位数则前面加一个零，好看
+
+        var day = date.getDate();//获取日
+        day = day < 10 ? "0" + day : day;
+        today1 = year + "-" + month + "-" + day
+        console.log(today1)
+        console.log(json[0].expiration_date.slice(0, 10))
+        console.log(json)
         for (let i = 0; i < json.length; i++) {
             divs += `<div class="issue-column">`;
             divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
             divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
-            divs += `<div class="issue-start">` + 'Start Time : ' + json[i].assign_start + `</div>`;
-            divs += `<div class="issue-duration">` + 'End Time : ' + json[i].assign_end + '</div>';
+            if (json[i].assign_start == "00:00" && json[i].assign_end == "00:00") {
+                divs += `<div class="issue-start">` + "任务已过期或分配失败" + `</div>`;
+            } else {
+                divs += `<div class="issue-start">` + 'Start Time : ' + json[i].assign_start + `</div>`;
+                divs += `<div class="issue-duration">` + 'End Time : ' + json[i].assign_end + '</div>';
+            }
+
             divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
             divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
             divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;
