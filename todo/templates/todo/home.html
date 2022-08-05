@@ -10,9 +10,9 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-7 text-center">
 
-            <h1>Simply Your Todos. Woo!</h1>
+            <h1>开始计划你的精彩人生吧！</h1>
             <p>Life is fun. But life is also busy. There is a million different things you could be doing. But what
-                matters is <u>what</u> you do. We created <b><i>Todo Woo</i></b> to help you make sense of all of your
+                matters is <u>what</u> you do. We created <b><i>Planny</i></b> to help you make sense of all of your
                 opportunities and live that life that matters most to you. Your new organized life awaits.</p>
             {% if user_name == 'AnonymousUser' %}
                 <br>
@@ -70,10 +70,10 @@
                         show: false
                     },
                     data: [
-                        {value: {{ unstart }}, name: 'NC'},
-                        {value: {{ current }}, name: 'ING'},
-                        {value: {{ completed }}, name: 'FINISHED'},
-                        {value: {{ expired }}, name: 'PAST'},
+                        {value: {{ unstart }}, name: '未开始'},
+                        {value: {{ current }}, name: '进行中'},
+                        {value: {{ completed }}, name: '已完成'},
+                        {value: {{ expired }}, name: '已过期'},
                     ]
                 }
             ]

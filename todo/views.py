@@ -45,8 +45,8 @@ def home(request):
             if to.fixedTime_end:
                 to.expiration_date = end1
                 to.status = 0
+                to.datecompleted = None
                 to.save()
-
         ###############
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
@@ -231,8 +231,8 @@ def currenttodos(request):
     return render(request, 'todo/currenttodos.html', {'todos': todos})
     assign_time = scheduling(todos)
     for i in range(min(len(assign_time), len(todos))):
-        todos[i].assign_start = assign_time[i]['start']
-        todos[i].assign_end = assign_time[i]['end']
+        todos[assign_time[i]['id']-1].assign_start = assign_time[i]['start']
+        todos[assign_time[i]['id']-1].assign_end = assign_time[i]['end']
     flag = 0
     if len(assign_time) != len(todos):
         flag = 1
@@ -261,7 +261,7 @@ def completedtodos(request):
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     data_dict['expiration_date__gt'] = today
     data_dict['expiration_date__lt'] = tomorrow
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False, **data_dict).order_by('-datecompleted')
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False,status=2 ,**data_dict).order_by('-datecompleted')
     return render(request, 'todo/completedtodos.html', {'todos': todos})
 
 
