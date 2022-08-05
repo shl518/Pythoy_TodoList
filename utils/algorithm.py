@@ -56,7 +56,6 @@ class Optimal:
             if self.punishments[i0] == 10:
                 for t in range(self.lasttime[i0]):
                     self.timeline[self.deadlines[i0] - t] = 1
-                print('put1')
                 self.arrange_result.append(
                     {'id': self.id[i0], 'start': self.deadlines[i0] - self.lasttime[i0],
                      'end': self.deadlines[i0]})
@@ -68,7 +67,6 @@ class Optimal:
             put = 0
             for j in range(self.deadlines[i], self.lasttime[i], -1):
                 if self.NoMission(i, j):  # 如果该时间片还没有任务，则将这个任务放在这里，即置为1
-                    print('put2')
                     self.PutMission(i, j)
                     put = 1
                     break
@@ -76,7 +74,7 @@ class Optimal:
             # 注意，此时不要将其安排在optimalChoice[i+1,n]中，以免产生后效性。已经产生了罚时的任务，最后安排在[i+1,n]中
             # 时间片中，因为可能有punishments[i+1,n]中的一个任务，的deadlines的时间在[i+1:n]中
             if put == 0:
-                for j in range(self.deadlines[i] + self.lasttime[i], 1441):
+                for j in range(self.deadlines[i] + 1, 1441):
                     if self.NoMission(i, j):  # 如果该时间片还没有任务，则将这个任务放在这里，即置为1
                         self.PutMission(i, j)
                         break
