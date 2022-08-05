@@ -176,9 +176,12 @@
             if (checkbox.checked == true) {//按钮已选中
                 document.getElementById("but").removeAttribute("hidden");//移除disabled
                 document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
+                document.getElementById('expiration_date').disabled = 'disabled'
+                document.getElementById('expiration_date').value = ''
             } else {
                 document.getElementById("but").hidden = "hidden";
                 document.getElementById('labelfixed').hidden = 'hidden';
+                document.getElementById("expiration_date").removeAttribute("disabled");
             }
         }
 

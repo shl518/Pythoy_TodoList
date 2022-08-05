@@ -14,6 +14,7 @@ from django.forms.models import model_to_dict
 import datetime
 from todo.pack import greater
 from utils.algorithm import scheduling
+from django.contrib import messages
 
 month_dic = months = {
     "January": 1,
@@ -207,6 +208,16 @@ def createtodo(request):
                 today = datetime.date.today()
                 end1 = str(today) + ' ' + str(newtodo.fixedTime_end)
                 newtodo.expiration_date = end1
+            if len(str(newtodo.fixedTime_start).split(':')) == 3:
+                h,m,s = str(newtodo.fixedTime_start).split(':')
+                start = int(h)*60+int(m)
+                h, m, s = str(newtodo.fixedTime_end).split(':')
+                end = int(h) * 60 + int(m)
+                if start > end:
+                    messages.warning(request,"日常任务固定开始时间大于结束时间，请您重新填写！")
+                    return render(request,'todo/createtodo.html',{})
+            print(newtodo.fixedTime_start,newtodo.fixedTime_end)
+
             newtodo.save()
             return redirect('currenttodos')
         except ValueError:
