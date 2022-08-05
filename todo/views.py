@@ -47,10 +47,6 @@ def home(request):
                 to.status = 0
                 to.datecompleted = None
                 to.save()
-        # t = Todo.objects.filter(user=request.user)
-        # for i in t:
-        #     i.expiration_date = '2022-08-04 22:14:08'
-        #     i.save()
         ###############
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
@@ -210,6 +206,8 @@ def currenttodos(request):
         data_dict['expiration_date__gt'] = start
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, status__lt=2, **data_dict)
     assign_time = scheduling(todos)
+    print(todos)
+    print(assign_time)
     for i in range(min(len(assign_time), len(todos))):
         todos[i].assign_start = assign_time[i]['start']
         todos[i].assign_end = assign_time[i]['end']
