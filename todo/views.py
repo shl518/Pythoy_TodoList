@@ -113,7 +113,8 @@ def loginuser(request):
 
 # calendar
 def tocalendar(request):
-    return render(request, 'todo/calendar.html')
+    auto = request.session['auto']
+    return render(request, 'todo/calendar.html', {'auto': auto})
 
 
 def whichdate(request):
