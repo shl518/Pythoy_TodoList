@@ -1,5 +1,8 @@
 {% extends "todo/base.html" %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+{% endblock %}
 {% block content %}
     <br>
     <br>
@@ -21,16 +24,29 @@
                 <br>
                 <a role="button" class="btn btn-primary btn-lg" href="/unstart/">Hint here to add task</a>
             {% else %}
-                <div id="main" style="width: 600px;height:400px;"></div>
-            {% endif %}
+                <div class="layui-tab">
+                      <ul class="layui-tab-title">
+                        <li class="layui-this">今日任务展示</li>
+                        <li>最近完成情况</li>
+                      </ul>
+                      <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                          <div id="main" style="width: 600px;height:400px;"></div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div id="main2" style="width: 600px;height:400px;"></div>
+                        </div>
+                      </div>
+                </div>
 
+            {% endif %}
         </div>
     </div>
-
 
 {% endblock %}
 {% block js %}
     <script src="{% static 'js/echarts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'layui/layui.js' %}"></script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -81,5 +97,88 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+    </script>
+<script type="text/javascript">
+        var mycars = new Array();
+        for (var i = 0;i<7;i++){
+            let time=(new Date).getTime()-24*60*60*1000*i;
+            let date = new Date(time);//创建JS自带的Date日期对象
+            let month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
+            month = month < 10 ? "0" + month : month;//三则运算符判断是个位数则前面加一个零，好看
+            let day = date.getDate();//获取日
+            day = day < 10 ? "0" + day : day;
+            let todaycc = month + "-" + day
+            mycars[i] = todaycc
+        }
+
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        option2 = {
+          title: {
+            text: ''
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          legend: {
+            data: ['finish', 'expire']
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              boundaryGap: false,
+              data: [mycars[6],mycars[5],mycars[4],mycars[3],mycars[2],mycars[1],mycars[0]],
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              name: 'finish',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
+              },
+              data: [{{finish6}}, {{finish5}}, {{finish4}}, {{finish3}}, {{finish2}}, {{finish1}}, {{finish0}}],
+            },
+            {
+              name: 'expire',
+              type: 'line',
+              stack: 'Total',
+              areaStyle: {},
+              emphasis: {
+                focus: 'series'
+              },
+              data: [{{expire6}}, {{expire5}}, {{expire4}}, {{expire3}}, {{expire2}}, {{expire1}}, {{expire0}}],
+            }
+          ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option2);
+        console.log({{todaycc4}})
     </script>
 {% endblock %}
