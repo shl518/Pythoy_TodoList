@@ -35,4 +35,4 @@
 - 8.06 11:45 Enqurance 增加了算法调度的全局开关，修改了Calendar的样式
 - 8.06 14:19 zzl 增加了全局开关的调度与保持，已查明时间选择控件出现混乱的原因是由于与新增开关的样式冲突，Enqurance加油
 - 8.06 19:02 Enqurance 修复了样式混乱的Bug
-- 8.07 21:32 Enqurance 修复了Calendar的开关
+- 8.06 21:32 Enqurance 修复了Calendar的开关
