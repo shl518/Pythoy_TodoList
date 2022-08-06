@@ -1,6 +1,6 @@
 import functools
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -34,6 +34,9 @@ month_dic = months = {
 
 # Create your views here.
 def home(request):
+    if str(request.user) == 'AnonymousUser':
+        request.session['auto'] = False
+    auto = request.session['auto']
     today = datetime.date.today()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     if str(request.user) == 'AnonymousUser':
@@ -69,6 +72,7 @@ def home(request):
         'completed': completed,
         'expired': expired,
         'all': unstart + completed + current + expired,
+        'auto': auto,
     })
 
 
@@ -197,8 +201,9 @@ def logoutuser(request):
 
 @login_required
 def createtodo(request):
+    auto = request.session['auto']
     if request.method == 'GET':
-        return render(request, 'todo/createtodo.html', {'form': TodoForm()})
+        return render(request, 'todo/createtodo.html', {'form': TodoForm(), 'auto': auto})
     else:
         try:
             form = TodoForm(request.POST)
@@ -209,24 +214,26 @@ def createtodo(request):
                 end1 = str(today) + ' ' + str(newtodo.fixedTime_end)
                 newtodo.expiration_date = end1
             if len(str(newtodo.fixedTime_start).split(':')) == 3:
-                h,m,s = str(newtodo.fixedTime_start).split(':')
-                start = int(h)*60+int(m)
+                h, m, s = str(newtodo.fixedTime_start).split(':')
+                start = int(h) * 60 + int(m)
                 h, m, s = str(newtodo.fixedTime_end).split(':')
                 end = int(h) * 60 + int(m)
                 if start > end:
-                    messages.warning(request,"日常任务固定开始时间大于结束时间，请您重新填写！")
-                    return render(request,'todo/createtodo.html',{})
-            print(newtodo.fixedTime_start,newtodo.fixedTime_end)
+                    messages.warning(request, "日常任务固定开始时间大于结束时间，请您重新填写！")
+                    return render(request, 'todo/createtodo.html', {'auto': auto})
+            print(newtodo.fixedTime_start, newtodo.fixedTime_end)
 
             newtodo.save()
             return redirect('currenttodos')
         except ValueError:
             return render(request, 'todo/createtodo.html',
-                          {'form': TodoForm(), 'error': 'Bad data passed in. Try again.'})
+                          {'form': TodoForm(), 'error': 'Bad data passed in. Try again.', 'auto': auto})
 
 
 @login_required
 def currenttodos(request):
+    auto = request.session['auto']
+    print(auto)
     data_dict = {}
     today = datetime.date.today()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
@@ -248,11 +255,12 @@ def currenttodos(request):
     flag = 0
     if len(assign_time) != len(todos):
         flag = 1
-    return render(request, 'todo/currenttodos.html', {'todos': todos, 'flag': flag})
+    return render(request, 'todo/currenttodos.html', {'todos': todos, 'flag': flag, 'auto': auto})
 
 
 @login_required
 def unstarttodos(request):
+    auto = request.session['auto']
     data_dict = {}
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     start = request.GET.get('start')
@@ -263,11 +271,12 @@ def unstarttodos(request):
     data_dict['status'] = 0
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, expiration_date__gte=tomorrow,
                                 **data_dict)
-    return render(request, 'todo/unstarttodo.html', {'todos': todos})
+    return render(request, 'todo/unstarttodo.html', {'todos': todos, 'auto': auto})
 
 
 @login_required
 def completedtodos(request):
+    auto = request.session['auto']
     data_dict = {}
     today = datetime.date.today()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
@@ -275,18 +284,20 @@ def completedtodos(request):
     data_dict['expiration_date__lt'] = tomorrow
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False, status=2, **data_dict).order_by(
         '-datecompleted')
-    return render(request, 'todo/completedtodos.html', {'todos': todos})
+    return render(request, 'todo/completedtodos.html', {'todos': todos, 'auto': auto})
 
 
 @login_required
 def expiredtodos(request):
+    auto = request.session['auto']
     todos = Todo.objects.filter(user=request.user, status=3).order_by(
         '-expiration_date')
-    return render(request, 'todo/expiredtido.html', {'todos': todos})
+    return render(request, 'todo/expiredtido.html', {'todos': todos, 'auto': auto})
 
 
 @login_required
 def viewtodo(request, todo_pk):
+    auto = request.session['auto']
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'GET':
         form = TodoForm(instance=todo)
@@ -294,14 +305,15 @@ def viewtodo(request, todo_pk):
         s_time = str(todo.fixedTime_start)[0:5]
         e_time = str(todo.fixedTime_end)[0:5]
         return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'pre': pre,
-                                                      's_time': s_time, 'e_time': e_time})
+                                                      's_time': s_time, 'e_time': e_time, 'auto': auto})
     else:
         try:
             form = TodoForm(request.POST, instance=todo)
             form.save()
             return redirect('currenttodos')
         except ValueError:
-            return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form, 'error': 'Bad Info.'})
+            return render(request, 'todo/viewtodo.html',
+                          {'todo': todo, 'form': form, 'error': 'Bad Info.', 'auto': auto})
 
 
 @login_required
@@ -325,3 +337,10 @@ def deletetodo(request):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     todo.delete()
     return redirect('currenttodos')
+
+
+@login_required
+def changetodo(request):
+    status = request.GET.get("n")
+    request.session['auto'] = status
+    return response.JsonResponse(status, safe=False)

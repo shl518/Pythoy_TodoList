@@ -37,6 +37,7 @@ urlpatterns = [
     path('expired/', views.expiredtodos, name='expiredtodos'),
     path('run/', views.completetodo, name='completetodo'),
     path('remove/', views.deletetodo, name='deletetodo'),
+    path('change/', views.changetodo, name='changetodo'),
 
     # calendar
     path('calendar/', views.tocalendar, name='tocalendar'),

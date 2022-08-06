@@ -1,130 +1,140 @@
 {% extends "todo/base.html" %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
-    <link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
-    <link rel="stylesheet" href="{% static 'css/symbol.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
+<link rel="stylesheet" href={% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css' %}>
+<link rel="stylesheet" href="{% static 'css/symbol.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-10">
-            {% if todos %}
-                <h1>{{ todos.count }} Current Todo{{ todos.count|pluralize }}</h1>
-                <br>
-                {% if error %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-                {% endif %}
-                <form method="get">
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <input id="start" name="start" class="form-control" type="time" required
-                                   placeholder="start">
-                        </div>
-                        -----
-                        <div class="form-group col-md-4">
-                            <input id="end" name="end" class="form-control" type="time" required placeholder="end">
-                        </div>
-
-                        <div class="form-group col-md-1">&nbsp</div>
-                        <div class="form-group col-md-1">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            {% else %}
-                <h1>Current Todos</h1>
-            {% endif %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+        {% if todos %}
+        <h1>{{ todos.count }} Current Todo{{ todos.count|pluralize }}</h1>
+        <br>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
         </div>
+        {% endif %}
+        <form method="get">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <input id="start" name="start" class="form-control" type="time" required
+                           placeholder="start">
+                </div>
+                -----
+                <div class="form-group col-md-4">
+                    <input id="end" name="end" class="form-control" type="time" required placeholder="end">
+                </div>
+
+                <div class="form-group col-md-1">&nbsp</div>
+                <div class="form-group col-md-1">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <h1>Current Todos</h1>
+        {% endif %}
     </div>
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-10">
-            {% if todos %}
-                <div class="list-group">
-                    {% for todo in todos %}
-                        <div class="list-group-item list-group-item-action{% if todo.assign_start == '00:00' and todo.assign_end == '00:00' %} list-group-item-info{% endif %} iconfont"
-                             style="{% if todo.status == 1 %} color: #942a25{% endif %}">
-                            <a class="col-lg-8">
-                                <b>{{ todo.title }}</b>
-                                {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}&nbsp;&nbsp;&nbsp;
-                                {% if todo.tag == 0 %}
-                                    &#xe807;运动
-                                {% elif todo.tag == 1 %}
-                                    &#xe6b8;学习
-                                {% elif todo.tag == 2 %}
-                                    &#xe800;饮食
-                                {% elif todo.tag == 3 %}
-                                    &#xe687;工作
-                                {% elif todo.tag == 4 %}
-                                    &#xe64f;休闲
-                                {% elif todo.tag == 5 %}
-                                    &#xe67b;生活
-                                {% elif todo.tag == 6 %}
-                                    &#xe6fe;其他
-                                {% endif %}&nbsp;
-                                {% if todo.assign_start == '00:00' and todo.assign_end == '00:00' %}
-                                    task cannot be arranged
-                                {% else %}
-                                    {{ todo.assign_start }}-{{ todo.assign_end }}
-                                {% endif %}
-                            </a>
-                            <font class="col-lg-1" size="2">{% if todo.status == 0 %}待开始{% else %}
-                                进行中{% endif %}</font>
-                            <a href="{% url 'viewtodo' todo.id %}" class="col-lg-1">
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+        {% if todos %}
+        <div class="list-group">
+            {% for todo in todos %}
+            <div class="list-group-item list-group-item-action{% if todo.assign_start == '00:00' and todo.assign_end == '00:00' %} list-group-item-info{% endif %} iconfont"
+                 style="{% if todo.status == 1 %} color: #942a25{% endif %}">
+                <a class="col-lg-8">
+                    <b>{{ todo.title }}</b>
+                    {% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}&nbsp;&nbsp;&nbsp;
+                    {% if todo.tag == 0 %}
+                    &#xe807;运动
+                    {% elif todo.tag == 1 %}
+                    &#xe6b8;学习
+                    {% elif todo.tag == 2 %}
+                    &#xe800;饮食
+                    {% elif todo.tag == 3 %}
+                    &#xe687;工作
+                    {% elif todo.tag == 4 %}
+                    &#xe64f;休闲
+                    {% elif todo.tag == 5 %}
+                    &#xe67b;生活
+                    {% elif todo.tag == 6 %}
+                    &#xe6fe;其他
+                    {% endif %}&nbsp;
+                    {% if auto == 'true'%}
+                    {% if todo.assign_start == '00:00' and todo.assign_end == '00:00' %}
+                    task cannot be arranged
+                    {% else %}
+                    {{ todo.assign_start }}-{{ todo.assign_end }}
+                    {% endif %}
+                    {% else %}
+                    {{ todo.expiration_date}}
+                    {% endif %}
+                </a>
+                <font class="col-lg-1" size="2">{% if todo.status == 0 %}待开始{% else %}
+                    进行中{% endif %}</font>
+                <a href="{% url 'viewtodo' todo.id %}" class="col-lg-1">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"
                                       style="{% if todo.status == 1 %} color: #942a25{% endif %}"></span>
-                            </a>
-                            <a href="/run/?nid={{ todo.id }}" class="col-lg-1">
-                                {% if todo.assign_start != '00:00' or todo.assign_end != '00:00' %}
-                                    {% if todo.status == 0 %}
-                                        <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-                                    {% else %}
-                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"
-                                              style="color: #942a25"></span>
-                                    {% endif %}
-                                {% endif %}
-                            </a>
-                            <a href="/remove/?nid={{ todo.id }}">
+                </a>
+                <a href="/run/?nid={{ todo.id }}" class="col-lg-1">
+                    {% if todo.assign_start != '00:00' or todo.assign_end != '00:00' %}
+                    {% if todo.status == 0 %}
+                    <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+                    {% else %}
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"
+                          style="color: #942a25"></span>
+                    {% endif %}
+                    {% endif %}
+                </a>
+                <a href="/remove/?nid={{ todo.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"
                                   style="{% if todo.status == 1 %} color: #942a25{% endif %}"></span>
-                            </a>
-                        </div>
-                    {% endfor %}
-                    <div style="margin-top: 20px">
-                        <a href="{% url 'createtodo' %}">
-                            <button type="submit" class="btn btn-primary">新增任务</button>
-                        </a>
-                    </div>
+                </a>
+            </div>
+            {% endfor %}
+            <div style="margin-top: 20px">
+                <a href="{% url 'createtodo' %}">
+                    <button type="submit" class="btn btn-primary">新增任务</button>
+                </a>
+            </div>
 
-                </div>
-            {% else %}
-                <div class="text-center">
-                    <h2>Looks like you don't have any todos! Nice work.</h2>
-                    <br>
-                    <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Todo</a>
-                </div>
-            {% endif %}
         </div>
+        {% else %}
+        <div class="text-center">
+            <h2>Looks like you don't have any todos! Nice work.</h2>
+            <br>
+            <a role="button" class="btn btn-primary" href="{% url 'createtodo' %}">New Todo</a>
+        </div>
+        {% endif %}
     </div>
+</div>
 {% endblock %}
 {% block js %}
-    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script src="{% static 'plugins/bootstrap_dist/js/bootstrap.min.js' %}"></script>
-    <script src={% static 'plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js' %}></script>
-    <script
-            src={% static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
-    <script type="text/javascript" src="{% static 'layui/layui.js' %}"></script>
-    <script>
-        layui.use('layer', function () {
-            var layer = layui.layer;
-            var flag ={{ flag }};
-            var msg = '抱歉，今日时间不足以安排所有任务';
-            if (flag === 1) {
-                layer.msg(msg, {icon: 5});
-            }
-        });
-    </script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap_dist/js/bootstrap.min.js' %}"></script>
+<script src={% static 'plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js' %}></script>
+<script
+        src={%
+        static 'plugins/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js' %}></script>
+<script type="text/javascript" src="{% static 'layui/layui.js' %}"></script>
+<script>
+    layui.use('layer', function () {
+        var layer = layui.layer;
+        var flag = {
+        {
+            flag
+        }
+    }
+        ;
+        var msg = '抱歉，今日时间不足以安排所有任务';
+        if (flag === 1) {
+            layer.msg(msg, {icon: 5});
+        }
+    });
+</script>
 {% endblock %}

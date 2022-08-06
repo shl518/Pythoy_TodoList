@@ -52,7 +52,7 @@
                 </li>
                 <li>
                     <label class="switch">
-                        <input type="checkbox" id="Global">
+                        <input type="checkbox" id="Global" onclick="turn()">
                         <div class="slider round"></div>
                     </label>
                 </li>
@@ -104,7 +104,11 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
+    if ({{auto}}==true){
+        document.getElementById("Global").checked = "checked"
+    }
     function time() {//编写获取时间的函数
         var date = new Date();//创建JS自带的Date日期对象
 
@@ -139,9 +143,19 @@
 
     function turn() {
         let global = document.getElementById('Global');
-        global.onclick = function () {
-            console.log(global.checked)
-        }
+        // global.onclick = function () {
+        console.log(global.checked)
+        $.ajax({
+            url: "/change/",
+            type: "get",
+            data: {n: global.checked},
+            dataType: "JSON",
+            success: function (res) {
+                console.log("success")
+            }
+        });
+        location.reload()
+        // }
     }
 </script>
 </body>
