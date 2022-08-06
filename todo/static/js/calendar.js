@@ -59,6 +59,8 @@ const daily = {
     False: "否",
 }
 
+model = true;
+
 const Message = (id) => {
     const list = document.getElementById("chose-date").innerHTML.split("   ") + "," +
         document.getElementById(id).innerHTML.split(",").toString().split(",");
@@ -86,7 +88,11 @@ const show = (json, target) => {
             divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
             divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
             if (json[i].assign_start === "00:00" && json[i].assign_end === "00:00") {
-                divs += `<div class="issue-failed">` + "任务已过期或分配失败" + `</div>`;
+                if (json[i].status === 3) {
+                    divs += `<div class="issue-failed">` + "任务未能分配且已过期" + `</div>`;
+                } else {
+                    divs += `<div class="issue-failed">` + "任务分配失败" + `</div>`;
+                }
             } else {
                 divs += `<div class="issue-start">` + 'Start Time : ' + json[i].assign_start + `</div>`;
                 divs += `<div class="issue-duration">` + 'End Time : ' + json[i].assign_end + '</div>';
@@ -193,7 +199,6 @@ const renderCalendar = () => {
             }
         }
     }
-
     today();
 };
 
@@ -208,3 +213,5 @@ document.querySelector(".next").addEventListener("click", () => {
 });
 
 renderCalendar();
+
+

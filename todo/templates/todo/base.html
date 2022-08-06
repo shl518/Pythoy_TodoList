@@ -10,6 +10,7 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="{% static 'todo/logo.png' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap_dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="../../static/css/style.css">
     {% block css %}{% endblock %}
     <title>Planny</title>
 </head>
@@ -30,47 +31,57 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             {% if user.is_authenticated %}
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item {{ unstart }}">
-                        <a class="nav-link" href="/unstart/">Unstart</a>
-                    </li>
-                    <li class="nav-item {{ current }}">
-                        <a class="nav-link" href="{% url 'currenttodos' %}">Current</a>
-                    </li>
-                    <li class="nav-item {{ completed }}">
-                        <a class="nav-link" href="{% url 'completedtodos' %}">Completed</a>
-                    </li>
-                    <li class="nav-item {{ expired }}">
-                        <a class="nav-link" href="/expired/">Expired</a>
-                    </li>
-                    <li class="nav-item {{ create }}">
-                        <a class="nav-link" href="{% url 'createtodo' %}">Create</a>
-                    </li>
-                </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {{ unstart }}">
+                    <a class="nav-link" href="/unstart/">Unstart</a>
+                </li>
+                <li class="nav-item {{ current }}">
+                    <a class="nav-link" href="{% url 'currenttodos' %}">Current</a>
+                </li>
+                <li class="nav-item {{ completed }}">
+                    <a class="nav-link" href="{% url 'completedtodos' %}">Completed</a>
+                </li>
+                <li class="nav-item {{ expired }}">
+                    <a class="nav-link" href="/expired/">Expired</a>
+                </li>
+                <li class="nav-item {{ create }}">
+                    <a class="nav-link" href="{% url 'createtodo' %}">Create</a>
+                </li>
+                <li class="nav-link" style="margin-top: 1rem;margin-left: 0.5rem">
+                    <div>AutoScheduling :</div>
+                </li>
+                <li>
+                    <label class="switch">
+                        <input type="checkbox" id="Global">
+                        <div class="slider round"></div>
+                    </label>
+                </li>
+            </ul>
             {% endif %}
+
 
             <ul class="navbar-nav ml-auto" style="float: right">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" id="timespan" href="#">Time</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tocalendar' %}">Calendar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" onclick="$('#signOutBtn').click()" class="nav-link">Logout</a>
-                        <form style='display: none;' method="POST" action="{% url 'logoutuser' %}">
-                            {% csrf_token %}
-                            <button id="signOutBtn" type="submit">Logout</button>
-                        </form>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="timespan" href="#">Time</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tocalendar' %}">Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="$('#signOutBtn').click()" class="nav-link">Logout</a>
+                    <form style='display: none;' method="POST" action="{% url 'logoutuser' %}">
+                        {% csrf_token %}
+                        <button id="signOutBtn" type="submit">Logout</button>
+                    </form>
+                </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signupuser' %}">Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'loginuser' %}">Login</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signupuser' %}">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loginuser' %}">Login</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
@@ -117,12 +128,21 @@
         second = second < 10 ? "0" + second : second;
 
         var current = year + "-" + month + "-" + day + " 星期" + weekday + " " + hour + ":" + minute + ":" + second;
-        {#console.log(current);//在控制台打印当前时间#}
-        document.getElementById("timespan").innerHTML = current;//获取对应ID标签的对象，将变量current显示在对应位置
-    }
+        {
+            // console.log(current);//在控制台打印当前时间#
+            document.getElementById("timespan").innerHTML = current;//获取对应ID标签的对象，将变量current显示在对应位置
+        }
 
-    time();
-    setInterval("time()", 1000);//setInterval函数可以延迟一定时间后执行某一函数
+        time();
+        setInterval("time()", 1000);
+    }//setInterval函数可以延迟一定时间后执行某一函数
+
+    function turn() {
+        let global = document.getElementById('Global');
+        global.onclick = function () {
+            console.log(global.checked)
+        }
+    }
 </script>
 </body>
 </html>
