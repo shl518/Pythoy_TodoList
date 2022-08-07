@@ -125,14 +125,8 @@
 <script>
     layui.use('layer', function () {
         var layer = layui.layer;
-        var flag = {
-        {
-            flag
-        }
-    }
-        ;
         var msg = '抱歉，今日时间不足以安排所有任务';
-        if (flag === 1) {
+        if ({{ flag }} === 1) {
             layer.msg(msg, {icon: 5});
         }
     });
