@@ -38,3 +38,4 @@
 - 8.06 21:32 Enqurance 修复了Calendar的开关
 - 8.06 23:45 zzl 增加了显示最近完成情况的图像
 - 8.07 11:31 shl 删除time，time显示有问题，加载还慢，必须斩草除根😡
+- 8.07 11:40 Enqurance 完成了Calendar界面，修复了一些小bug
