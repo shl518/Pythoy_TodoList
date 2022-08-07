@@ -80,7 +80,6 @@ def home(request):
         'expired': expired,
         'all': unstart + completed + current + expired,
         'auto': auto,
-        **day_dict,
     })
 
 

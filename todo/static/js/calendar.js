@@ -67,22 +67,19 @@ const Message = (id) => {
     return list.split(",");
 }
 
-const show = (json, target) => {
+const show_auto = (json, target) => {
     if (json.length > 0) {
         let divs = "";
-        var date = new Date();//创建JS自带的Date日期对象
+        let date = new Date();//创建JS自带的Date日期对象
 
-        var year = date.getFullYear();//获取年
+        let year = date.getFullYear();//获取年
 
-        var month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
+        let month = date.getMonth() + 1;//获取月，注意其范围是0~30，使用时需要加1
         month = month < 10 ? "0" + month : month;//三则运算符判断是个位数则前面加一个零，好看
 
-        var day = date.getDate();//获取日
+        let day = date.getDate();//获取日
         day = day < 10 ? "0" + day : day;
-        today1 = year + "-" + month + "-" + day
-        console.log(today1)
-        console.log(json[0].expiration_date.slice(0, 10))
-        console.log(json)
+        today1 = year + "-" + month + "-" + day;
         for (let i = 0; i < json.length; i++) {
             divs += `<div class="issue-column">`;
             divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
@@ -120,7 +117,9 @@ const today = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
                 const json = JSON.parse(xhr.response);
                 const target = document.getElementById("matters");
-                show(json, target);
+                let flag = document.getElementById("Global");
+                console.log(flag.checked);
+                show_auto(json, target);
             }
         }
     }
@@ -193,7 +192,7 @@ const renderCalendar = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         const json = JSON.parse(xhr.response);
-                        show(json, target);
+                        show_auto(json, target);
                     }
                 }
             }
