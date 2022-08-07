@@ -147,6 +147,13 @@
     display: inline-block;
 }
 
+.issue-expire {
+    width: 13rem;
+    font-family: Arial, serif;
+    margin-left: 1rem;
+    display: inline-block;
+}
+
 .issue-duration {
     width: 13rem;
     font-family: Arial, serif;

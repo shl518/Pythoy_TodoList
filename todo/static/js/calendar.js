@@ -105,6 +105,39 @@ const show_auto = (json, target) => {
     }
 }
 
+const show_origin = (json, target) => {
+    const len = json.length;
+    if (len > 0) {
+        for (let i = 0; i < len - 1; i++) {
+            for (let j = 0; j < len - i - 1; j++) {
+                let e_1 = json[j].expiration_date.slice(11, 16);
+                let e_2 = json[j + 1].expiration_date.slice(11, 16);
+                if (e_1 > e_2) {
+                    let temp = json[j];
+                    json[j] = json[j + 1];
+                    json[j + 1] = temp;
+                }
+            }
+        }
+        let divs = "";
+        for (let i = 0; i < json.length; i++) {
+            divs += `<div class="issue-column">`;
+            divs += `<div class="issue-title">` + 'Title : ' + json[i].title + `</div>`;
+            divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
+            divs += `<div class="issue-expire">` + 'Expire Time : ' + json[i].expiration_date.slice(11, 16) + `</div>`;
+            divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>';
+            divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
+            divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
+            divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;
+            divs += `</div>`;
+            target.innerHTML = divs;
+        }
+    } else {
+        target.innerHTML = `<div class="issue-nothing">` + 'You have no mission this day!' + `</div>`;
+    }
+}
+
+
 const today = () => {
     const xhr = new XMLHttpRequest();
     const dt = new Date();
@@ -117,9 +150,12 @@ const today = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
                 const json = JSON.parse(xhr.response);
                 const target = document.getElementById("matters");
-                let flag = document.getElementById("Global");
-                console.log(flag.checked);
-                show_auto(json, target);
+                const auto = document.getElementById("Global").checked;
+                if (auto === true) {
+                    show_auto(json, target);
+                } else {
+                    show_origin(json, target);
+                }
             }
         }
     }
@@ -181,7 +217,7 @@ const renderCalendar = () => {
         let block = document.getElementById(i.toString())
         block.onclick = function () {
             /* 1.创建对象 2.初始化请求方法并设置url 3.发送 4.事件绑定 */
-            const xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest(), auto = document.getElementById("Global");
             const phrase = 'month=' + Message(i)[0] + '&year=' + Message(i)[1] + '&date=' + Message(i)[2];
             const target = document.getElementById("matters");
             const the_day = document.getElementById("mission");
@@ -191,8 +227,13 @@ const renderCalendar = () => {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
+                        const auto = document.getElementById("Global").checked;
                         const json = JSON.parse(xhr.response);
-                        show_auto(json, target);
+                        if (auto === true) {
+                            show_auto(json, target);
+                        } else {
+                            show_origin(json, target);
+                        }
                     }
                 }
             }
