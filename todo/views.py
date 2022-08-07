@@ -239,8 +239,8 @@ def createtodo(request):
                 if start > end:
                     messages.warning(request, "日常任务固定开始时间大于结束时间，请您重新填写！")
                     return render(request, 'todo/createtodo.html', {'auto': auto})
-            print(newtodo.fixedTime_start, newtodo.fixedTime_end)
-
+            # print(newtodo.fixedTime_start, newtodo.fixedTime_end)
+            newtodo.single_time = str(newtodo.expiration_date)[11:16]
             newtodo.save()
             return redirect('currenttodos')
         except ValueError:
