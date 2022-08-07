@@ -165,7 +165,7 @@
             minuteStep: 1,
         });
         var checkbox = document.getElementById("isDaily");//选中checkbox的id；
-            if (checkbox.checked == true) {//按钮已选中
+            if (checkbox.checked === true) {//按钮已选中
                 document.getElementById("but").removeAttribute("hidden");//移除disabled
                 document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
             }
@@ -173,7 +173,7 @@
     <script>
         function check() {
             var checkbox = document.getElementById("isDaily");//选中checkbox的id；
-            if (checkbox.checked == true) {//按钮已选中
+            if (checkbox.checked === true) {//按钮已选中
                 document.getElementById("but").removeAttribute("hidden");//移除disabled
                 document.getElementById("labelfixed").removeAttribute("hidden");//移除disabled
                 document.getElementById('expiration_date').disabled = 'disabled'
