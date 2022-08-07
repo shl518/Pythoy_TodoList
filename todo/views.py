@@ -52,26 +52,35 @@ def home(request):
                 to.status = 0
                 to.datecompleted = None
                 to.save()
-        t = Todo.objects.filter(user=request.user)
         unstart = Todo.objects.filter(user=request.user, status=0, expiration_date__lt=tomorrow).count()
         current = Todo.objects.filter(user=request.user, status=1, expiration_date__lt=tomorrow).count()
         completed = Todo.objects.filter(user=request.user, datecompleted__isnull=False, expiration_date__gte=today,
                                         expiration_date__lt=tomorrow).count()
         expired = Todo.objects.filter(user=request.user, status=3, expiration_date__lt=tomorrow,
                                       datecompleted__isnull=True, expiration_date__gte=today).count()
-        day_dict = {}
-        for i in range(7):
-            day_need_e = (datetime.date.today() + datetime.timedelta(days=1) + - datetime.timedelta(days=i)).strftime(
-                "%Y-%m-%d")
-            day_need_s = (datetime.date.today() + datetime.timedelta(days=i) + - datetime.timedelta(days=i)).strftime(
-                "%Y-%m-%d")
-            name2 = 'finish' + str(i)
-            day_dict[name2] = Todo.objects.filter(user=request.user, expiration_date__lt=day_need_e,
-                                                  expiration_date__gte=day_need_s, status=2).count()
-            name3 = 'expire' + str(i)
-            day_dict[name3] = Todo.objects.filter(user=request.user, expiration_date__lt=day_need_e,
-                                                  expiration_date__gte=day_need_s, status=3).count()
-        print(day_dict)
+        day_dict = {'kkk':10}
+        if str(request.user) != 'AnonymousUser':
+            for i in range(7):
+                day_need_e = (datetime.date.today() + datetime.timedelta(days=1) + - datetime.timedelta(days=i)).strftime(
+                    "%Y-%m-%d")
+                day_need_s = (datetime.date.today() + datetime.timedelta(days=i) + - datetime.timedelta(days=i)).strftime(
+                    "%Y-%m-%d")
+                name2 = 'finish' + str(i)
+                day_dict[name2] = Todo.objects.filter(user=request.user, expiration_date__lt=day_need_e,
+                                                      expiration_date__gte=day_need_s, status=2).count()
+                name3 = 'expire' + str(i)
+                day_dict[name3] = Todo.objects.filter(user=request.user, expiration_date__lt=day_need_e,
+                                                      expiration_date__gte=day_need_s, status=3).count()
+    if str(request.user) == 'AnonymousUser':
+        return render(request, 'todo/home.html', {
+            'user_name': str(request.user),
+            'unstart': unstart,
+            'current': current,
+            'completed': completed,
+            'expired': expired,
+            'all': unstart + completed + current + expired,
+            'auto': auto,
+        })
     return render(request, 'todo/home.html', {
         'user_name': str(request.user),
         'unstart': unstart,
@@ -80,7 +89,7 @@ def home(request):
         'expired': expired,
         'all': unstart + completed + current + expired,
         'auto': auto,
-        **day_dict,
+        **day_dict
     })
 
 
