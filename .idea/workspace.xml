@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="f245302f-2c11-421f-8c9e-07b4e502cdc8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+=======
+    <list default="true" id="6b3659d3-302c-4cfe-b830-c4ff0281f8d9" name="变更" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/views.py" afterDir="false" />
+>>>>>>> origin/master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,11 +73,18 @@
       <created>1659843395268</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
+<<<<<<< HEAD
       <updated>1659843395268</updated>
       <workItem from="1659843396475" duration="373000" />
       <workItem from="1659876988441" duration="611000" />
       <workItem from="1659928565565" duration="849000" />
       <workItem from="1659929580093" duration="604000" />
+=======
+      <updated>1659877830467</updated>
+      <workItem from="1659877832636" duration="497000" />
+      <workItem from="1659878345180" duration="655000" />
+      <workItem from="1659933922321" duration="358000" />
+>>>>>>> origin/master
     </task>
     <servers />
   </component>
