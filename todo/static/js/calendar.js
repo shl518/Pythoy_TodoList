@@ -94,7 +94,11 @@ const show_auto = (json, target) => {
                 divs += `<div class="issue-start">` + 'Start Time : ' + json[i].assign_start + `</div>`;
                 divs += `<div class="issue-duration">` + 'End Time : ' + json[i].assign_end + '</div>';
             }
-            divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
+            if (json[i].isDaily === true) {
+                divs += `<div class="issue-status">` + 'Status : ' + '正常' + `</div>`;
+            } else {
+                divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`;
+            }
             divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
             divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;
             divs += `</div>`;
@@ -126,7 +130,11 @@ const show_origin = (json, target) => {
             divs += `<div class="issue-tag">` + 'Tag : ' + tag_choices[json[i].tag] + `</div>`;
             divs += `<div class="issue-expire">` + 'Expire Time : ' + json[i].expiration_date.slice(11, 16) + `</div>`;
             divs += `<div class="issue-duration">` + 'Duration : ' + json[i].predict_hour + 'h' + json[i].predict_minute + 'min' + '</div>';
-            divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`
+            if (json[i].isDaily === true) {
+                divs += `<div class="issue-status">` + 'Status : ' + '正常' + `</div>`;
+            } else {
+                divs += `<div class="issue-status">` + 'Status : ' + status[json[i].status] + `</div>`;
+            }
             divs += `<div class="issue-importance">` + 'Importance : ' + importance[json[i].status] + `</div>`;
             divs += `<div class="issue-daily">` + 'Daily : ' + json[i].isDaily + `</div>`;
             divs += `</div>`;
