@@ -45,6 +45,7 @@ class Todo(models.Model):
     overdue = models.BooleanField(default=False)
     assign_start = models.CharField(verbose_name="开始时间", max_length=10, default='00:00')
     assign_end = models.CharField(verbose_name="结束时间", max_length=10, default='00:00')
+    single_time = models.CharField(verbose_name="当日时间", max_length=10, default='00:00')
 
     def __str__(self):
         return self.title
