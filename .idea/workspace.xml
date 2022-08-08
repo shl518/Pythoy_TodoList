@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b3659d3-302c-4cfe-b830-c4ff0281f8d9" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Pythoy_TodoList.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Pythoy_TodoList.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/templates/todo/currenttodos.html" beforeDir="false" afterPath="$PROJECT_DIR$/todo/templates/todo/currenttodos.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,6 +67,7 @@
       <updated>1659877830467</updated>
       <workItem from="1659877832636" duration="497000" />
       <workItem from="1659878345180" duration="655000" />
+      <workItem from="1659933922321" duration="358000" />
     </task>
     <servers />
   </component>

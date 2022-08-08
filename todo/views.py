@@ -327,7 +327,13 @@ def viewtodo(request, todo_pk):
     else:
         try:
             form = TodoForm(request.POST, instance=todo)
-            form.save()
+            newtodo = form.save(commit=False)
+            if newtodo.isDaily:
+                today = datetime.date.today()
+                end1 = str(today) + ' ' + str(newtodo.fixedTime_end)
+                newtodo.expiration_date = end1
+            newtodo.single_time = str(newtodo.expiration_date)[11:16]
+            newtodo.save()
             return redirect('currenttodos')
         except ValueError:
             return render(request, 'todo/viewtodo.html',
