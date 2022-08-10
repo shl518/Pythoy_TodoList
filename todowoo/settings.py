@@ -59,8 +59,6 @@ WSGI_APPLICATION = 'todowoo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-# this is the configuration of Databse into these project, Django by default provide the configurations of SQLITE, we can use any Database whatever you like based on that change the below configuration statement.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

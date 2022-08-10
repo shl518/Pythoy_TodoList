@@ -106,23 +106,6 @@ class Optimal:
         return True
 
     def PutMission(self, i, end):  # 暂时取消休息时间，加上休息时间Bug较多
-        # if end + self.relax <= 1440:
-        #     if self.timeline[end + self.relax] == 1:
-        #         pos = 0
-        #         while 1:
-        #             pos += 1
-        #             if self.timeline[end + pos] == 1:
-        #                 break
-        #         end -= self.relax - pos + 1
-        # if end - self.lasttime[i] - self.relax >= 0:
-        #     if self.timeline[end - self.lasttime[i] - self.relax] == 1:
-        #         pos = 0
-        #         while 1:
-        #             pos += 1
-        #             if self.timeline[end - self.lasttime[i] - pos] == 1:
-        #                 break
-        #         print(pos)
-        #         end += self.relax + 1 - pos
         for t in range(self.lasttime[i]):
             self.timeline[end - t] = 1
         self.arrange_result.append(

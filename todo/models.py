@@ -31,7 +31,7 @@ class Todo(models.Model):
     memo = models.TextField(verbose_name="内容", blank=True)
     created = models.DateTimeField(auto_now_add=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
-    important = models.BooleanField(default=False)  # 不要用这个，没有用
+    important = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     level = models.SmallIntegerField(verbose_name="任务重要性", choices=level_choices, default=0)
     expiration_date = models.DateTimeField(verbose_name="任务截止日期", null=True, blank=True)
